@@ -29,4 +29,9 @@ RUN dnf -y install \
         which \
         cpio \
         SDL-devel && \
-    dnf -y clean all
+    dnf -y clean all && \
+    useradd -U -m yoctouser
+
+USER yoctouser
+WORKDIR /home/yoctouser
+CMD /bin/bash

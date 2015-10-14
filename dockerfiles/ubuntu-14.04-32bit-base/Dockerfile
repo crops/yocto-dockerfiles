@@ -14,4 +14,9 @@ RUN apt-get update && \
         socat \
         python \
         libsdl1.2-dev && \
-    apt-get clean
+    apt-get clean && \
+    useradd -U -m yoctouser
+
+USER yoctouser
+WORKDIR /home/yoctouser
+CMD /bin/bash
