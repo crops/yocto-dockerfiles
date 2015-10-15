@@ -33,7 +33,7 @@ def preserve_artifacts(builddir, destdir, uid, removeimage=False):
     except IOError:
         pass
 
-    subprocess.call("chown -R {}:{} {}".format(uid, uid, destdir))
+    subprocess.call("chown -R {}:{} {}".format(uid, uid, destdir), shell=True)
 
 # Raise exception if the subprocess fails
 def call_with_raise(cmd, logfile):
@@ -69,12 +69,6 @@ parser.add_argument("branch", default="master", help="Branch of poky to use")
 args = parser.parse_args()
 
 builddir = None
-
-# This is for speeding up instances of just testing images since we
-# won't have to wait on setscene. At the end we can just copy the builddir
-# to a tempdir
-if args.deploydir:
-    args.builddir = "/home/yoctouser/build"
 
 if not args.builddir:
     builddir = tempfile.mkdtemp(prefix="testrun-", dir="/fromhost")
