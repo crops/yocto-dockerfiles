@@ -1,3 +1,4 @@
+# ubuntu-14.04-32bit-base
 FROM rewitt/32bit-ubuntu:14.04
 
 RUN apt-get update && \

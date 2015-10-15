@@ -1,3 +1,4 @@
+# ubuntu-14.04-builder
 FROM rewitt/yocto:ubuntu-14.04-base
 
 USER yoctouser

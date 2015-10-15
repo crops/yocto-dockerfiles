@@ -1,3 +1,4 @@
+# fedora-22-base
 FROM fedora:22
 
 RUN dnf -y install \
