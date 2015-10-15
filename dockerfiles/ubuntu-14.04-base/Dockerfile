@@ -13,9 +13,14 @@ RUN apt-get update && \
         chrpath \
         socat \
         python \
-        libsdl1.2-dev && \
+        libsdl1.2-dev  \
+        tightvncserver && \
     apt-get clean && \
-    useradd -U -m yoctouser
+    useradd -U -m yoctouser && \
+    mkdir -p /home/yoctouser/.vnc && \
+    echo "" | vncpasswd -f > /home/yoctouser/.vnc/passwd && \
+    chown -R yoctouser:yoctouser /home/yoctouser/.vnc && \
+    chmod 0600 /home/yoctouser/.vnc/passwd
 
 USER yoctouser
 WORKDIR /home/yoctouser

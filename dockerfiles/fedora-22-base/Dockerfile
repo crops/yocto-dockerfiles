@@ -28,9 +28,14 @@ RUN dnf -y install \
         findutils \
         which \
         cpio \
-        SDL-devel && \
+        SDL-devel \
+        tigervnc-server && \
     dnf -y clean all && \
-    useradd -U -m yoctouser
+    useradd -U -m yoctouser && \
+    mkdir -p /home/yoctouser/.vnc && \
+    echo "" | vncpasswd -f > /home/yoctouser/.vnc/passwd && \
+    chown -R yoctouser:yoctouser /home/yoctouser/.vnc && \
+    chmod 0600 /home/yoctouser/.vnc/passwd
 
 USER yoctouser
 WORKDIR /home/yoctouser
