@@ -76,6 +76,8 @@ else:
     builddir = args.builddir
 
 stdoutlog = os.path.join(builddir, "stdout")
+if not os.path.isdir(builddir):
+    os.makedirs(builddir)
 
 try:
     if args.fetch:
