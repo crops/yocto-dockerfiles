@@ -33,7 +33,7 @@ def preserve_artifacts(builddir, destdir, uid, removeimage=False):
     except IOError:
         pass
 
-    subprocess.call("chown -R {}:{} {}".format(uid, uid, destdir), shell=True)
+    subprocess.call("chown -R {} {}".format(uid, destdir), shell=True)
 
 # Raise exception if the subprocess fails
 def call_with_raise(cmd, logfile):
