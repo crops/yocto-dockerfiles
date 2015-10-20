@@ -8,6 +8,7 @@ RUN apt-get update && \
         git-core \
         diffstat \
         unzip \
+        sysstat \
         texinfo \
         gcc-multilib \
         build-essential \
