@@ -64,6 +64,7 @@ parser.add_argument("--variable", action='append', help='Variable and value of'
                     ' the form "variable=value"')
 parser.add_argument("--uid", default='{!s}'.format(os.getuid()), help='Numeric'
                     'uid of the owner of the artifacts.')
+parser.add_argument("--outputprefix", default='testrun-')
 parser.add_argument("branch", default="master", help="Branch of poky to use")
 
 args = parser.parse_args()
@@ -71,7 +72,7 @@ args = parser.parse_args()
 builddir = None
 
 if not args.builddir:
-    builddir = tempfile.mkdtemp(prefix="testrun-", dir="/fromhost")
+    builddir = tempfile.mkdtemp(prefix=args.outputprefix, dir="/fromhost")
 else:
     builddir = args.builddir
 
@@ -140,7 +141,7 @@ except Exception as e:
                 shutil.move(builddir, builddir.rstrip('/') + "-failure")
 
     if args.deploydir:
-        finaldir = tempfile.mkdtemp(prefix="testrun-", dir="/fromhost",
+        finaldir = tempfile.mkdtemp(prefix=args.outputprefix, dir="/fromhost",
                                     suffix="-failure")
         preserve_artifacts(builddir, finaldir, args.uid, args.removeimage)
 
@@ -150,7 +151,7 @@ finally:
     subprocess.call("vncserver -kill :1", shell=True)
 
 if args.preservesuccess and args.deploydir:
-    finaldir = tempfile.mkdtemp(prefix="testrun-", dir="/fromhost")
+    finaldir = tempfile.mkdtemp(prefix=args.outputprefix, dir="/fromhost")
     preserve_artifacts(builddir, finaldir, args.uid, args.removeimage)
 
 if not args.preservesuccess and not args.deploydir:
