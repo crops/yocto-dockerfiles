@@ -81,13 +81,15 @@ if not os.path.isdir(builddir):
     os.makedirs(builddir)
 
 try:
-    if args.fetch:
-        cmd = "cd {}; git fetch --all".format(args.pokydir)
-        call_with_raise(cmd, stdoutlog)
+    # It is assumed if pokydir is passed in, we shouldn't touch it
+    if "/home/yoctouser/poky" == args.pokydir:
+        if args.fetch:
+            cmd = "cd {}; git fetch --all".format(args.pokydir)
+            call_with_raise(cmd, stdoutlog)
 
-    if args.branch:
-        cmd = "cd {}; git checkout {}".format(args.pokydir, args.branch)
-        call_with_raise(cmd, stdoutlog)
+        if args.branch:
+            cmd = "cd {}; git checkout {}".format(args.pokydir, args.branch)
+            call_with_raise(cmd, stdoutlog)
 
     # Have to use bash since the default on ubuntu is dash which is garbage
     cmd = 'bash -c ". {}/oe-init-build-env {}"'.format(args.pokydir, builddir)
