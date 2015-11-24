@@ -2,6 +2,7 @@
 FROM rewitt/yocto:ubuntu-14.04-base
 
 USER yoctouser
-COPY runbuild.py /home/yoctouser/
+COPY runtest.py /home/yoctouser/
+COPY runbitbake.py /home/yoctouser/
 WORKDIR /home/yoctouser
-ENTRYPOINT ["/home/yoctouser/runbuild.py"]
+ENTRYPOINT ["/home/yoctouser/runtest.py"]
