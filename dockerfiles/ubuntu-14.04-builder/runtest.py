@@ -113,11 +113,13 @@ try:
 
     bbtarget = "\"{} -c testimage\"".format(args.imagetotest)
     runbitbake = "{}/runbitbake.py".format(scriptdir)
-    allextraconf = " ".join(["--extraconf={}".format(x) for x in args.extraconf])
 
-    cmd = "{} --pokydir={} --extraconf={} {} {} {}".format(runbitbake, args.pokydir,
-                                   extraconf, allextraconf,
-                                   bbtarget, builddir)
+    cmd = "{} --pokydir={} --extraconf={} {} {}".format(runbitbake, args.pokydir,
+                                   extraconf, bbtarget, builddir)
+    if args.extraconf:
+        allextraconf = " ".join(["--extraconf={}".format(x) for x in args.extraconf])
+        cmd += " {}".format(allextraconf)
+
     call_with_raise(cmd, stdoutlog)
 
 except Exception as e:
