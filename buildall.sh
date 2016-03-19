@@ -59,8 +59,10 @@ set -e
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRIPTDIR
 
-# Create a uid for the repo so we don't overwrite any images the user has
-REPO=$(uuidgen)-yocto-docker-test
+if [ "x" = "x$REPO" ]; then
+	# Create a uid for the repo so we don't overwrite any user images
+	REPO=$(uuidgen)-yocto-docker-test
+fi
 
 # Build the "base" images first
 DIRS=$(readlink -f $(dirname $(find -path '*base/Dockerfile')))
