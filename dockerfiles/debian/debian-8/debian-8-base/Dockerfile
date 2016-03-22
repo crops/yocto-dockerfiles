@@ -16,6 +16,7 @@ RUN apt-get update && \
         socat \
         python \
         libsdl1.2-dev  \
+        cpio \
         tightvncserver && \
     apt-get clean && \
     useradd -U -m yoctouser && \
