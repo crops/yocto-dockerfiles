@@ -32,6 +32,7 @@ RUN apt-get update && \
         python \
         libsdl1.2-dev  \
         cpio \
+        xz-utils \
         tightvncserver && \
     apt-get clean && \
     useradd -U -m yoctouser && \

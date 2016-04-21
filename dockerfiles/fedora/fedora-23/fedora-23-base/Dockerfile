@@ -48,6 +48,7 @@ RUN dnf -y update && \
         cpio \
         SDL-devel \
         file \
+        xz \
         tigervnc-server && \
     dnf -y clean all && \
     useradd -U -m yoctouser && \

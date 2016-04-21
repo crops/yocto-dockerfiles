@@ -46,6 +46,7 @@ RUN yum -y update && \
         SDL-devel \
         file \
         tigervnc-server \
+        xz \
         which && \
     yum -y clean all && \
     groupadd -g 1000 yoctouser && \
