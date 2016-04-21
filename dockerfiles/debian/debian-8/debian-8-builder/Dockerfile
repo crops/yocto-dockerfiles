@@ -14,12 +14,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-FROM rewitt/yocto:debian-8-base
+FROM crops/yocto:debian-8-base
 
 USER root
 # Use add for now to guarantee that the cache is invalidated without requiring
 # a user to specify --no-cache.
-ADD https://raw.githubusercontent.com/zedian/yocto-container-helpers/master/runbitbake.py /home/yoctouser/
+ADD https://github.com/crops/crops/blob/master/helpers/runbitbake.py /home/yoctouser/
 RUN chown -R yoctouser /home/yoctouser/ && \
     chmod +x /home/yoctouser/runbitbake.py
 
