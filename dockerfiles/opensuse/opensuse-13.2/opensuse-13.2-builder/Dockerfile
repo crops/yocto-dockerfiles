@@ -19,7 +19,7 @@ FROM crops/yocto:opensuse-13.2-base
 USER root
 # Use add for now to guarantee that the cache is invalidated without requiring
 # a user to specify --no-cache.
-ADD https://github.com/crops/crops/blob/master/helpers/runbitbake.py /home/yoctouser/
+ADD https://raw.githubusercontent.com/crops/crops/master/helpers/runbitbake.py /home/yoctouser/
 RUN chown -R yoctouser /home/yoctouser/ && \
     chmod +x /home/yoctouser/runbitbake.py
 
