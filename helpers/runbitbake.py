@@ -31,6 +31,39 @@ old_handler = {}
 old_handler[str(signal.SIGINT)] = signal.getsignal(signal.SIGINT)
 old_handler[str(signal.SIGTERM)] = signal.getsignal(signal.SIGTERM)
 
+def addExtra(tempdir,builddir,name,extraList):
+    myf = "{}/conf/{}".format(builddir,name)
+    myf_orig = "{}/{}.orig".format(tempdir,name)
+    tmpfile = "{}/{}.orig.tmp".format(tempdir,name)
+
+    # copy isn't atomic so make sure that orig is created atomically so that
+    # file.orig is always correct even if file gets hosed. So that
+    # means if a user ever sees file.orig, they can be assured that it
+    # is the same as the original file with no corruption.
+    shutil.copyfile(myf, tmpfile)
+    with open(tmpfile, "r") as f:
+        fd = f.fileno()
+        os.fdatasync(fd)
+
+    # Remember first sync the file AND directory to make sure data
+    # is written out
+    fd = os.open(os.path.dirname(tmpfile), os.O_RDONLY)
+    os.fsync(fd)
+    os.close(fd)
+
+    # Rename should be atomic with respect to disk, yes all of this assumes
+    # linux and possibly non-network filesystems.
+    os.rename(tmpfile, myf_orig)
+
+    with open(myf, "a") as f:
+        if extraList:
+            for conf in extraList:
+                with open(conf) as f2:
+                    content = f2.readlines()
+                for l in content:
+                    f.write("%s\n"%format(l))
+
+
 # If bitbake is around let it do all the signal handling
 def handler(signum, frame):
     if bitbake_process:
@@ -53,6 +86,8 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--extraconf", action='append', help="File containing"
                     "extra configuration")
+parser.add_argument("--extralayers", action='append', help="File containing"
+                    "extra bblayers")
 
 parser.add_argument("--pokydir", default="/home/yoctouser/poky",
                     required=True, help="Directory containing poky")
@@ -73,55 +108,26 @@ if not os.path.isdir(builddir):
 # restore it by using builddir/tempdir/local.conf.orig
 tempdir = tempfile.mkdtemp(prefix="runbitbake-tmpdir", dir=builddir)
 
+# Have to use bash since the default on ubuntu is dash which is garbage
 try:
-    # Have to use bash since the default on ubuntu is dash which is garbage
     cmd = 'bash -c ". {}/oe-init-build-env {}"'.format(args.pokydir, builddir)
     subprocess.check_call(cmd, stdout=sys.stdout, stderr=sys.stderr,
                           shell=True)
 
-    local_conf = "{}/conf/local.conf".format(builddir)
-    local_conf_orig = "{}/local.conf.orig".format(tempdir)
-    tmpfile = "{}/local.conf.orig.tmp".format(tempdir)
+    addExtra(tempdir,builddir,"local.conf",args.extraconf)
+    addExtra(tempdir,builddir,"bblayers.conf",args.extralayers)
 
-    # copy isn't atomic so make sure that orig is created atomically so that
-    # local.conf.orig is always correct even if local.conf gets hosed. So that
-    # means if a user ever sees local.conf.orig, they can be assured that it
-    # is the same as the original local.conf with no corruption.
-    shutil.copyfile(local_conf, tmpfile)
-    with open(tmpfile, "r") as f:
-        fd = f.fileno()
-        os.fdatasync(fd)
+    cmd = '. {}/oe-init-build-env {} && '.format(args.pokydir,
+                                                 builddir)
+    cmd += 'exec bitbake {}'.format(args.target)
+    bitbake_process = subprocess.Popen(['/bin/bash', '-c', cmd],
+                                       stdout=sys.stdout,
+                                       stderr=sys.stderr, shell=False)
+    bitbake_process.wait()
 
-    # Remember first sync the file AND directory to make sure data
-    # is written out
-    fd = os.open(os.path.dirname(tmpfile), os.O_RDONLY)
-    os.fsync(fd)
-    os.close(fd)
-
-    # Rename should be atomic with respect to disk, yes all of this assumes
-    # linux and possibly non-network filesystems.
-    os.rename(tmpfile, local_conf_orig)
-
-
-    try:
-        with open(local_conf, "a") as f:
-            if args.extraconf:
-                for conf in args.extraconf:
-                    f.write("require {}\n".format(conf))
-        cmd = '. {}/oe-init-build-env {} && '.format(args.pokydir,
-               builddir)
-        cmd += 'exec bitbake {}'.format(args.target)
-        bitbake_process = subprocess.Popen(['/bin/bash', '-c', cmd],
-                                            stdout=sys.stdout,
-                                            stderr=sys.stderr, shell=False)
-        bitbake_process.wait()
-
-    finally:
-        os.rename(local_conf_orig, local_conf)
 
 except subprocess.CalledProcessError as e:
     print e
 
 finally:
     shutil.rmtree(tempdir, ignore_errors=True)
-
