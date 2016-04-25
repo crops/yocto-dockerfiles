@@ -61,8 +61,7 @@ def addExtra(tempdir,builddir,name,extraList):
                 with open(conf) as f2:
                     content = f2.readlines()
                 for l in content:
-                    f.write("%s\n"%format(l))
-
+                    f.write("%s\n"%format(l.strip()))
 
 # If bitbake is around let it do all the signal handling
 def handler(signum, frame):
