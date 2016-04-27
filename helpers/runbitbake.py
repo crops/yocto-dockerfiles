@@ -63,6 +63,14 @@ def addExtra(tempdir,builddir,name,extraList):
                 for l in content:
                     f.write("%s\n"%format(l.strip()))
 
+def restore_files(tempdir, builddir, conffiles):
+    for f in conffiles:
+        dest = os.path.join(builddir, "conf", f)
+        src = os.path.join(tempdir, f + ".orig")
+
+        if os.path.exists(src):
+            os.rename(src, dest)
+
 # If bitbake is around let it do all the signal handling
 def handler(signum, frame):
     if bitbake_process:
@@ -113,17 +121,19 @@ try:
     subprocess.check_call(cmd, stdout=sys.stdout, stderr=sys.stderr,
                           shell=True)
 
-    addExtra(tempdir,builddir,"local.conf",args.extraconf)
-    addExtra(tempdir,builddir,"bblayers.conf",args.extralayers)
+    try:
+        addExtra(tempdir,builddir,"local.conf",args.extraconf)
+        addExtra(tempdir,builddir,"bblayers.conf",args.extralayers)
 
-    cmd = '. {}/oe-init-build-env {} && '.format(args.pokydir,
-                                                 builddir)
-    cmd += 'exec bitbake {}'.format(args.target)
-    bitbake_process = subprocess.Popen(['/bin/bash', '-c', cmd],
-                                       stdout=sys.stdout,
-                                       stderr=sys.stderr, shell=False)
-    bitbake_process.wait()
-
+        cmd = '. {}/oe-init-build-env {} && '.format(args.pokydir,
+                                                     builddir)
+        cmd += 'exec bitbake {}'.format(args.target)
+        bitbake_process = subprocess.Popen(['/bin/bash', '-c', cmd],
+                                           stdout=sys.stdout,
+                                           stderr=sys.stderr, shell=False)
+        bitbake_process.wait()
+    finally:
+        restore_files(tempdir, builddir, ["local.conf", "bblayers.conf"])
 
 except subprocess.CalledProcessError as e:
     print e
