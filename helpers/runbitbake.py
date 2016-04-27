@@ -31,10 +31,11 @@ old_handler = {}
 old_handler[str(signal.SIGINT)] = signal.getsignal(signal.SIGINT)
 old_handler[str(signal.SIGTERM)] = signal.getsignal(signal.SIGTERM)
 
-def addExtra(tempdir,builddir,name,extraList):
-    myf = "{}/conf/{}".format(builddir,name)
-    myf_orig = "{}/{}.orig".format(tempdir,name)
-    tmpfile = "{}/{}.orig.tmp".format(tempdir,name)
+
+def addextra(tempdir, builddir, name, extralist):
+    myf = "{}/conf/{}".format(builddir, name)
+    myf_orig = "{}/{}.orig".format(tempdir, name)
+    tmpfile = "{}/{}.orig.tmp".format(tempdir, name)
 
     # copy isn't atomic so make sure that orig is created atomically so that
     # file.orig is always correct even if file gets hosed. So that
@@ -56,12 +57,13 @@ def addExtra(tempdir,builddir,name,extraList):
     os.rename(tmpfile, myf_orig)
 
     with open(myf, "a") as f:
-        if extraList:
-            for conf in extraList:
+        if extralist:
+            for conf in extralist:
                 with open(conf) as f2:
                     content = f2.readlines()
                 for l in content:
-                    f.write("%s\n"%format(l.strip()))
+                    f.write("%s\n" % format(l.strip()))
+
 
 def restore_files(tempdir, builddir, conffiles):
     for f in conffiles:
@@ -70,6 +72,7 @@ def restore_files(tempdir, builddir, conffiles):
 
         if os.path.exists(src):
             os.rename(src, dest)
+
 
 # If bitbake is around let it do all the signal handling
 def handler(signum, frame):
@@ -85,6 +88,7 @@ def handler(signum, frame):
             bitbake_process.send_signal(signum)
     else:
         old_handler[str(signum)](signum, frame)
+
 
 signal.signal(signal.SIGINT, handler)
 signal.signal(signal.SIGTERM, handler)
@@ -122,8 +126,8 @@ try:
                           shell=True)
 
     try:
-        addExtra(tempdir,builddir,"local.conf",args.extraconf)
-        addExtra(tempdir,builddir,"bblayers.conf",args.extralayers)
+        addextra(tempdir, builddir, "local.conf", args.extraconf)
+        addextra(tempdir, builddir, "bblayers.conf", args.extralayers)
 
         cmd = '. {}/oe-init-build-env {} && '.format(args.pokydir,
                                                      builddir)
