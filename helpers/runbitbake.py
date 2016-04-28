@@ -90,57 +90,59 @@ def handler(signum, frame):
         old_handler[str(signum)](signum, frame)
 
 
-signal.signal(signal.SIGINT, handler)
-signal.signal(signal.SIGTERM, handler)
+if __name__ == '__main__':
+    signal.signal(signal.SIGINT, handler)
+    signal.signal(signal.SIGTERM, handler)
 
-parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser()
 
-parser.add_argument("--extraconf", action='append', help="File containing"
-                    "extra configuration")
-parser.add_argument("--extralayers", action='append', help="File containing"
-                    "extra bblayers")
+    parser.add_argument("--extraconf", action='append', help="File containing"
+                        "extra configuration")
+    parser.add_argument("--extralayers", action='append',
+                        help="File containing extra bblayers")
 
-parser.add_argument("--pokydir", default="/home/yoctouser/poky",
-                    required=True, help="Directory containing poky")
-parser.add_argument("--target", "-t", required=True,
-                    help="What bitbake should build")
-parser.add_argument("--builddir", "-b", required=True,
-                    help="Directory to build in")
+    parser.add_argument("--pokydir", default="/home/yoctouser/poky",
+                        required=True, help="Directory containing poky")
+    parser.add_argument("--target", "-t", required=True,
+                        help="What bitbake should build")
+    parser.add_argument("--builddir", "-b", required=True,
+                        help="Directory to build in")
 
-args = parser.parse_args()
+    args = parser.parse_args()
 
-builddir = args.builddir
+    builddir = args.builddir
 
-if not os.path.isdir(builddir):
-    os.makedirs(builddir)
+    if not os.path.isdir(builddir):
+        os.makedirs(builddir)
 
-# tempdir is a subdirectory of builddir in case builddir and local.conf
-# already existed. Then if something goes wrong with local.conf the user can
-# restore it by using builddir/tempdir/local.conf.orig
-tempdir = tempfile.mkdtemp(prefix="runbitbake-tmpdir", dir=builddir)
+    # tempdir is a subdirectory of builddir in case builddir and local.conf
+    # already existed. Then if something goes wrong with local.conf the user
+    # can restore it by using builddir/tempdir/local.conf.orig
+    tempdir = tempfile.mkdtemp(prefix="runbitbake-tmpdir", dir=builddir)
 
-# Have to use bash since the default on ubuntu is dash which is garbage
-try:
-    cmd = 'bash -c ". {}/oe-init-build-env {}"'.format(args.pokydir, builddir)
-    subprocess.check_call(cmd, stdout=sys.stdout, stderr=sys.stderr,
-                          shell=True)
-
+    # Have to use bash since the default on ubuntu is dash which is garbage
     try:
-        addextra(tempdir, builddir, "local.conf", args.extraconf)
-        addextra(tempdir, builddir, "bblayers.conf", args.extralayers)
+        cmd = 'bash -c ". {}/oe-init-build-env {}"'.format(args.pokydir,
+                                                           builddir)
+        subprocess.check_call(cmd, stdout=sys.stdout, stderr=sys.stderr,
+                              shell=True)
 
-        cmd = '. {}/oe-init-build-env {} && '.format(args.pokydir,
-                                                     builddir)
-        cmd += 'exec bitbake {}'.format(args.target)
-        bitbake_process = subprocess.Popen(['/bin/bash', '-c', cmd],
-                                           stdout=sys.stdout,
-                                           stderr=sys.stderr, shell=False)
-        bitbake_process.wait()
+        try:
+            addextra(tempdir, builddir, "local.conf", args.extraconf)
+            addextra(tempdir, builddir, "bblayers.conf", args.extralayers)
+
+            cmd = '. {}/oe-init-build-env {} && '.format(args.pokydir,
+                                                         builddir)
+            cmd += 'exec bitbake {}'.format(args.target)
+            bitbake_process = subprocess.Popen(['/bin/bash', '-c', cmd],
+                                               stdout=sys.stdout,
+                                               stderr=sys.stderr, shell=False)
+            bitbake_process.wait()
+        finally:
+            restore_files(tempdir, builddir, ["local.conf", "bblayers.conf"])
+
+    except subprocess.CalledProcessError as e:
+        print e
+
     finally:
-        restore_files(tempdir, builddir, ["local.conf", "bblayers.conf"])
-
-except subprocess.CalledProcessError as e:
-    print e
-
-finally:
-    shutil.rmtree(tempdir, ignore_errors=True)
+        shutil.rmtree(tempdir, ignore_errors=True)
