@@ -63,6 +63,25 @@ class RunBitbakeTestBase(unittest.TestCase):
         shutil.rmtree(self.tempdir, ignore_errors=True)
 
 
+class ExitCodeTest(RunBitbakeTestBase):
+    def setUp(self):
+        super(ExitCodeTest, self).setUp()
+
+        # Remove the bindir from the path so we know bitbake will fail
+        self.pathorig = os.environ['PATH']
+        os.environ['PATH'] = self.pathorig.split(':', 1)[1]
+
+    def tearDown(self):
+        os.environ['PATH'] = self.pathorig
+
+    # Make sure the exitcode is nonzero if runbitbake fails
+    def test_exit_code_non_zero(self):
+        cmd = """python helpers/runbitbake.py --pokydir={} """ \
+              """-t junk -b {} """.format(self.pokydir, self.builddir)
+        rc = subprocess.call(cmd.split(), shell=False)
+        self.assertNotEqual(0, rc)
+
+
 class ConfFilesTest(RunBitbakeTestBase):
     def setUp(self):
         super(ConfFilesTest, self).setUp()

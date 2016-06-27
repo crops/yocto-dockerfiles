@@ -134,15 +134,15 @@ if __name__ == '__main__':
             cmd = '. {}/oe-init-build-env {} && '.format(args.pokydir,
                                                          builddir)
             cmd += 'exec bitbake {}'.format(args.target)
-            bitbake_process = subprocess.Popen(['/bin/bash', '-c', cmd],
-                                               stdout=sys.stdout,
-                                               stderr=sys.stderr, shell=False)
-            bitbake_process.wait()
+            subprocess.check_call(['/bin/bash', '-c', cmd],
+                                  stdout=sys.stdout,
+                                  stderr=sys.stderr, shell=False)
         finally:
             restore_files(tempdir, builddir, ["local.conf", "bblayers.conf"])
 
     except subprocess.CalledProcessError as e:
         print(e)
+        sys.exit(1)
 
     finally:
         shutil.rmtree(tempdir, ignore_errors=True)
