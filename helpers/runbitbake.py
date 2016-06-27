@@ -142,7 +142,7 @@ if __name__ == '__main__':
             restore_files(tempdir, builddir, ["local.conf", "bblayers.conf"])
 
     except subprocess.CalledProcessError as e:
-        print e
+        print(e)
 
     finally:
         shutil.rmtree(tempdir, ignore_errors=True)
