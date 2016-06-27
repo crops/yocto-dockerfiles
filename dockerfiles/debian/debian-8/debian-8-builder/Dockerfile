@@ -17,9 +17,7 @@
 FROM crops/yocto:debian-8-base
 
 USER root
-# Use add for now to guarantee that the cache is invalidated without requiring
-# a user to specify --no-cache.
-ADD https://raw.githubusercontent.com/crops/crops/master/helpers/runbitbake.py /home/yoctouser/
+COPY runbitbake.py /home/yoctouser/
 RUN chown -R yoctouser /home/yoctouser/ && \
     chmod +x /home/yoctouser/runbitbake.py
 
