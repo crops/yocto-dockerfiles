@@ -29,7 +29,7 @@ RUN apt-get update && \
         build-essential \
         chrpath \
         socat \
-        python \
+        python3 \
         libsdl1.2-dev  \
         xz-utils  \
         tightvncserver && \

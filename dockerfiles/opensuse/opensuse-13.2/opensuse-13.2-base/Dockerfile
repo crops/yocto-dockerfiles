@@ -17,6 +17,7 @@
 FROM opensuse:13.2
 
 RUN zypper --non-interactive install python \
+                   python3 \
                    gcc \
                    gcc-c++ \
                    git \

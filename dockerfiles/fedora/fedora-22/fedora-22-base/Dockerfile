@@ -24,6 +24,7 @@ RUN dnf -y install \
         bzip2 \
         gzip \
         python \
+        python3 \
         unzip \
         perl \
         patch \

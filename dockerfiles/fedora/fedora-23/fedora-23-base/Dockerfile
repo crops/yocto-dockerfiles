@@ -25,6 +25,7 @@ RUN dnf -y update && \
         bzip2 \
         gzip \
         python \
+        python3 \
         unzip \
         perl \
         patch \

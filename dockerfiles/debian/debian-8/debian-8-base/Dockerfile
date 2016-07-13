@@ -30,6 +30,7 @@ RUN apt-get update && \
         chrpath \
         socat \
         python \
+        python3 \
         libsdl1.2-dev  \
         cpio \
         xz-utils \
