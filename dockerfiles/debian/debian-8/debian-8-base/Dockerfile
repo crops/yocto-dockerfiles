@@ -34,13 +34,15 @@ RUN apt-get update && \
         libsdl1.2-dev  \
         cpio \
         xz-utils \
+        locales \
         tightvncserver && \
     apt-get clean && \
     useradd -U -m yoctouser && \
     mkdir -p /home/yoctouser/.vnc && \
     echo "" | vncpasswd -f > /home/yoctouser/.vnc/passwd && \
     chown -R yoctouser:yoctouser /home/yoctouser/.vnc && \
-    chmod 0600 /home/yoctouser/.vnc/passwd
+    chmod 0600 /home/yoctouser/.vnc/passwd && \
+    echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
 
 USER yoctouser
 WORKDIR /home/yoctouser

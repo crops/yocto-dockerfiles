@@ -31,6 +31,9 @@ RUN zypper --non-interactive install python \
                    patch \
                    socat \
                    tar \
+                   glibc-locale \
+                   python3-xml \
+                   python3-curses \
                    libSDL-devel && \
     useradd -U -m yoctouser
 
