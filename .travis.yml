@@ -1,10 +1,23 @@
-sudo: required
+language: python
 
+sudo: required
 services:
-        - docker
+  - docker
 
 env:
-        global:
-                - REPO="crops/yocto"
+  matrix:
+    - DISTRO_TO_BUILD=debian-8
+    - DISTRO_TO_BUILD=fedora-22
+    - DISTRO_TO_BUILD=fedora-23
+    - DISTRO_TO_BUILD=opensuse-13.2
+    - DISTRO_TO_BUILD=ubuntu-14.04
 
-script: ./buildall.sh
+  global:
+    - REPO=crops/yocto
+
+before_install:
+  - pip install pytest-pep8
+
+script:
+  - py.test -ra --pep8
+  - ./build_container.sh
