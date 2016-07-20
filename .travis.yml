@@ -9,6 +9,7 @@ env:
     - DISTRO_TO_BUILD=debian-8
     - DISTRO_TO_BUILD=fedora-22
     - DISTRO_TO_BUILD=fedora-23
+    - DISTRO_TO_BUILD=fedora-24
     - DISTRO_TO_BUILD=opensuse-13.2
     - DISTRO_TO_BUILD=ubuntu-14.04
     - DISTRO_TO_BUILD=ubuntu-16.04
