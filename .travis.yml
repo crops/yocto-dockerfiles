@@ -6,6 +6,7 @@ services:
 
 env:
   matrix:
+    - DISTRO_TO_BUILD=centos-7
     - DISTRO_TO_BUILD=debian-8
     - DISTRO_TO_BUILD=fedora-22
     - DISTRO_TO_BUILD=fedora-23
