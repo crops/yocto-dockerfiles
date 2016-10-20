@@ -33,6 +33,8 @@ RUN apt-get update && \
         libsdl1.2-dev  \
         xz-utils  \
         locales \
+        screen \
+        tmux \
         tightvncserver && \
     apt-get clean && \
     useradd -U -m yoctouser && \

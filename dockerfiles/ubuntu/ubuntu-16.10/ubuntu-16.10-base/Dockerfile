@@ -35,6 +35,8 @@ RUN apt-get update && \
         xz-utils  \
         locales \
         cpio \
+        screen \
+        tmux \
         tightvncserver && \
     apt-get clean && \
     useradd -U -m yoctouser && \

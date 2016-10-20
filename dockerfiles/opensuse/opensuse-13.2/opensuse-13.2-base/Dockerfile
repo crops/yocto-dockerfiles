@@ -34,6 +34,8 @@ RUN zypper --non-interactive install python \
                    glibc-locale \
                    python3-xml \
                    python3-curses \
+                   screen \
+                   tmux \
                    libSDL-devel && \
     useradd -U -m yoctouser
 

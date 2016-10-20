@@ -48,6 +48,8 @@ RUN dnf -y install \
         SDL-devel \
         xz \
         file \
+        screen \
+        tmux \
         tigervnc-server && \
     dnf -y clean all && \
     useradd -U -m yoctouser && \

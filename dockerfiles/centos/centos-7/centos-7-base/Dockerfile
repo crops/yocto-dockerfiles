@@ -47,6 +47,8 @@ RUN yum -y install epel-release && \
         file \
         tigervnc-server \
         xz \
+        screen \
+        tmux \
         which && \
     yum -y clean all && \
     groupadd -g 1000 yoctouser && \

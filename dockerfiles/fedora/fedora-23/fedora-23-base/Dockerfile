@@ -50,6 +50,8 @@ RUN dnf -y update && \
         SDL-devel \
         file \
         xz \
+        screen \
+        tmux \
         tigervnc-server && \
     dnf -y clean all && \
     useradd -U -m yoctouser && \
