@@ -8,6 +8,9 @@ import tempfile
 import sys
 import stat
 import imp
+import shlex
+import signal
+import pytest
 
 
 class RunBitbakeTestBase(unittest.TestCase):
@@ -142,6 +145,59 @@ class AddExtraTest(RunBitbakeTestBase):
 
         intersection = extraconflines & localconflines
         self.assertListEqual(list(intersection), list(extraconflines))
+
+
+@pytest.fixture
+def bitbake_signal_path():
+    oldenv = os.environ.copy()
+
+    # Add the fake bitbake to path
+    os.environ['PATH'] = "./tests/unit/signals:" + os.environ['PATH']
+
+    yield
+
+    os.environ = oldenv
+
+
+@pytest.fixture
+def pokydir(tmpdir):
+    # runbitbake.py requires --pokydir with a "oe-init-build-env" script
+    setupscript = tmpdir.mkdir("poky").join("oe-init-build-env")
+    with open(str(setupscript), "w"):
+        pass
+
+    yield tmpdir.join("poky")
+
+
+test_signal = [signal.SIGINT, signal.SIGTERM]
+
+
+@pytest.mark.parametrize("test_signal", test_signal)
+def test_signal_forward(bitbake_signal_path, tmpdir, pokydir, test_signal):
+    import time
+    cmd = "python helpers/runbitbake.py -t foo --pokydir {} -b {}"
+    cmd = cmd.format(pokydir, str(tmpdir))
+
+    p = subprocess.Popen(shlex.split(cmd),
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT, shell=False)
+
+    # Wait til program is started before sending the signal
+    count = 0
+    while count < 30:
+        stdout = p.stdout.readline()
+
+        if 'Waiting for signal' not in stdout:
+            time.sleep(1)
+            count = count + 1
+        else:
+            break
+
+    # Now that the process is running send it a signal
+    p.send_signal(test_signal)
+
+    stdout, stderr = p.communicate()
+    assert "Handler called with signal {}\n".format(test_signal) == stdout
 
 if __name__ == '__main__':
     unittest.main()
