@@ -33,6 +33,10 @@ old_handler[str(signal.SIGTERM)] = signal.getsignal(signal.SIGTERM)
 
 
 def addextra(tempdir, builddir, name, extralist):
+    # If there is no extraconf there, is no reason to do any other work
+    if extralist is None:
+        return
+
     myf = "{}/conf/{}".format(builddir, name)
     myf_orig = "{}/{}.orig".format(tempdir, name)
     tmpfile = "{}/{}.orig.tmp".format(tempdir, name)
