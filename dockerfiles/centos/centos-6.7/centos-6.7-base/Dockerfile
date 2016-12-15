@@ -49,12 +49,12 @@ RUN yum -y update && \
         xz \
         which && \
     yum -y clean all && \
+    cp -af /etc/skel/ /etc/vncskel/ && \
+    mkdir  /etc/vncskel/.vnc && \
+    echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
+    chmod 0600 /etc/vncskel/.vnc/passwd && \
     groupadd -g 1000 yoctouser && \
     useradd -u 1000 -g yoctouser -m yoctouser && \
-    mkdir -p /home/yoctouser/.vnc && \
-    echo "" | vncpasswd -f > /home/yoctouser/.vnc/passwd && \
-    chown -R yoctouser:yoctouser /home/yoctouser/.vnc && \
-    chmod 0600 /home/yoctouser/.vnc/passwd && \
     echo -e "/home/yoctouser/buildtools\ny\n" | bash /buildtools.sh && \
     echo '. /home/yoctouser/buildtools/environment-setup*' >> /home/yoctouser/.bashrc && \
     chown -R yoctouser:yoctouser /home/yoctouser && \

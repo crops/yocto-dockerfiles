@@ -38,13 +38,14 @@ RUN apt-get clean && \
         locales \
         screen \
         tmux \
+	fluxbox \
         tightvncserver && \
     apt-get clean && \
+    cp -af /etc/skel/ /etc/vncskel/ && \
+    mkdir  /etc/vncskel/.vnc && \
+    echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
+    chmod 0600 /etc/vncskel/.vnc/passwd && \
     useradd -U -m yoctouser && \
-    mkdir -p /home/yoctouser/.vnc && \
-    echo "" | vncpasswd -f > /home/yoctouser/.vnc/passwd && \
-    chown -R yoctouser:yoctouser /home/yoctouser/.vnc && \
-    chmod 0600 /home/yoctouser/.vnc/passwd && \
     echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
 
 USER yoctouser

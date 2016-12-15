@@ -52,13 +52,15 @@ RUN dnf -y update && \
         xz \
         screen \
         tmux \
+	fluxbox \
         tigervnc-server && \
     dnf -y clean all && \
+    cp -af /etc/skel/ /etc/vncskel/ && \
+    mkdir  /etc/vncskel/.vnc && \
+    echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
+    chmod 0600 /etc/vncskel/.vnc/passwd && \
     useradd -U -m yoctouser && \
-    mkdir -p /home/yoctouser/.vnc && \
-    echo "" | vncpasswd -f > /home/yoctouser/.vnc/passwd && \
-    chown -R yoctouser:yoctouser /home/yoctouser/.vnc && \
-    chmod 0600 /home/yoctouser/.vnc/passwd
+
 
 USER yoctouser
 WORKDIR /home/yoctouser
