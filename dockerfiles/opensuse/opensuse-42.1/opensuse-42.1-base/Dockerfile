@@ -34,7 +34,12 @@ RUN zypper --non-interactive install python \
                    glibc-locale \
                    python3-xml \
                    python3-curses \
-                   libSDL-devel && \
+                   libSDL-devel \
+		   xorg-x11-Xvnc && \
+    cp -af /etc/skel/ /etc/vncskel/ && \
+    mkdir  /etc/vncskel/.vnc && \
+    echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
+    chmod 0600 /etc/vncskel/.vnc/passwd && \
     useradd -U -m yoctouser
 
 USER yoctouser
