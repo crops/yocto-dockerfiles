@@ -36,7 +36,12 @@ RUN zypper --non-interactive install python \
                    python3-curses \
                    screen \
                    tmux \
-                   libSDL-devel && \
+                   libSDL-devel \
+		   xorg-x11-Xvnc && \
+    cp -af /etc/skel/ /etc/vncskel/ && \
+    mkdir  /etc/vncskel/.vnc && \
+    echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
+    chmod 0600 /etc/vncskel/.vnc/passwd && \
     useradd -U -m yoctouser
 
 USER yoctouser
