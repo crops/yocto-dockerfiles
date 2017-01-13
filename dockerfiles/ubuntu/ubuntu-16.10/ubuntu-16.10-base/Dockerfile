@@ -37,6 +37,7 @@ RUN apt-get update && \
         cpio \
         screen \
         tmux \
+        sudo \
         tightvncserver && \
     apt-get clean && \
     useradd -U -m yoctouser && \

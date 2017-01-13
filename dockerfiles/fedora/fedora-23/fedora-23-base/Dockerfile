@@ -52,6 +52,7 @@ RUN dnf -y update && \
         xz \
         screen \
         tmux \
+        sudo \
         tigervnc-server && \
     dnf -y clean all && \
     useradd -U -m yoctouser && \

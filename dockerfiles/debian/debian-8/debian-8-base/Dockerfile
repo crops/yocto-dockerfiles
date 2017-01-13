@@ -38,6 +38,7 @@ RUN apt-get clean && \
         locales \
         screen \
         tmux \
+        sudo \
         tightvncserver && \
     apt-get clean && \
     useradd -U -m yoctouser && \

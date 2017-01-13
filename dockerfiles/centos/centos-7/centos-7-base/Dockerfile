@@ -49,6 +49,7 @@ RUN yum -y install epel-release && \
         xz \
         screen \
         tmux \
+        sudo \
         which && \
     yum -y clean all && \
     groupadd -g 1000 yoctouser && \
