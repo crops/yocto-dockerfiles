@@ -50,3 +50,5 @@ docker build -t $REPO:$TAG .
 cd -
 
 ./tests/container/smoke.sh $REPO:$DISTRO_TO_BUILD-builder
+
+rm $workdir -rf
