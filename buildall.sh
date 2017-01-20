@@ -35,24 +35,16 @@ function build_images {
 	echo "Building in $tmpdir"
 
 	for i in $1; do
-		IMAGETAG=$(basename $i)
-		CONTEXTDIR=$tmpdir/$IMAGETAG
+		DISTRO_TO_BUILD=$(basename $i)
+		OUTPUTDIR=$tmpdir/$DISTRO_TO_BUILD
+		mkdir $OUTPUTDIR
 
-		mkdir $CONTEXTDIR
-		cd $CONTEXTDIR
-
-		# Replace the rewitt/yocto repo with the newly one meant for testing
-		cp $i/Dockerfile .
-		sed -i -e "s#rewitt/yocto#$2#" Dockerfile
-		echo "Building $localrepo:$IMAGETAG"
-		bash -c "docker build --force-rm -t $localrepo:$IMAGETAG . > \
-			build.log || \
-			echo \"$IMAGETAG build failed\" \
-			tail -f build.log \
-			echo -e \"\n\n\"" &
+		echo "Building $DISTRO_TO_BUILD"
+		TMPDIR=$OUTPUTDIR REPO=$REPO DISTRO_TO_BUILD=$DISTRO_TO_BUILD \
+			bash -c "$build_cont . >& \
+			$OUTPUTDIR/build.log || \
+			echo \"$DISTRO_TO_BUILD build failed\"" &
 		PIDS=( ${PIDS[@]} $! )
-
-		cd -
 	done
 }
 
@@ -79,11 +71,8 @@ if [ "x" = "x$REPO" ]; then
 	REPO=$(uuidgen)-yocto-docker-test
 fi
 
-# Build the "base" images first
-DIRS=$(readlink -f $(dirname $(find -path '*base/Dockerfile')))
-build_images "$DIRS" $REPO
-waitforimages
+build_cont=`readlink -f ./build_container.sh`
 
-DIRS=$(readlink -f $(dirname $(find -path '*builder/Dockerfile')))
-build_images "$DIRS" $REPO
+DIRS=$(readlink -f $(dirname $(dirname $(find -path '*base/Dockerfile'))))
+build_images "$DIRS"
 waitforimages
