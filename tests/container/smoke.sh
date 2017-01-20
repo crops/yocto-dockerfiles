@@ -35,12 +35,12 @@ chmod -R 777 $workdir
 # Try to build quilt-native which is small and fast to build.
 git clone --depth 1 --branch master \
           git://git.yoctoproject.org/poky $workdir/poky
-docker run -it --rm -v $workdir:/workdir $image --pokydir=$pokydir \
+docker run -t --rm -v $workdir:/workdir $image --pokydir=$pokydir \
            -b $builddir -t quilt-native
 
 # Since yoctouser in the container may create files that the travis user
 # can't delete, run the container again to delete the files in the directory.
-docker run -it --rm -v $workdir:/workdir --entrypoint=/bin/rm $image \
+docker run -t --rm -v $workdir:/workdir --entrypoint=/bin/rm $image \
            $builddir -rf
 
 rm $workdir -rf
