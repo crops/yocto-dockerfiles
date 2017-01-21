@@ -49,4 +49,4 @@ rm $builddir -rf || exit 1
 # Really this should be an exit 1 as well if it fails, but for some reason
 # on travis, for fedora it consistently says that it cannot acquire the
 # the transaction lock.
-$REMOVE_CMD
+$REMOVE_CMD || exit 0

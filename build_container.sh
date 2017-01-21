@@ -33,6 +33,9 @@ workdir=$workdir/$TAG
 cp build-install-dumb-init.sh $workdir
 cd $workdir
 
+baseimage=`grep FROM Dockerfile | sed -e 's/FROM //'`
+docker pull $baseimage
+
 docker build -t $REPO:$TAG .
 rm $workdir -rf
 cd -
