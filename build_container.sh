@@ -25,9 +25,16 @@ set -e
 # First build the base
 TAG=$DISTRO_TO_BUILD-base
 dockerdir=`find -name $TAG`
+workdir=`mktemp --tmpdir -d tmp-$TAG.XXX`
 
-cd $dockerdir
+cp -r $dockerdir $workdir
+workdir=$workdir/$TAG
+
+cp build-install-dumb-init.sh $workdir
+cd $workdir
+
 docker build -t $REPO:$TAG .
+rm $workdir -rf
 cd -
 
 # Now build the builder. We copy things to a temporary directory so that we

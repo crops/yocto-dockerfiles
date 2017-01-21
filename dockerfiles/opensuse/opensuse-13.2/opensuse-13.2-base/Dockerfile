@@ -40,6 +40,10 @@ RUN zypper --non-interactive install python \
                    libSDL-devel && \
     useradd -U -m yoctouser
 
+COPY build-install-dumb-init.sh /
+RUN  bash /build-install-dumb-init.sh && \
+     rm /build-install-dumb-init.sh
+
 USER yoctouser
 WORKDIR /home/yoctouser
 CMD /bin/bash

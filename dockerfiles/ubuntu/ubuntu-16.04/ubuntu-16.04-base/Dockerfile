@@ -39,13 +39,17 @@ RUN apt-get update && \
         tmux \
         sudo \
         tightvncserver && \
-    apt-get clean && \
     useradd -U -m yoctouser && \
     mkdir -p /home/yoctouser/.vnc && \
     echo "" | vncpasswd -f > /home/yoctouser/.vnc/passwd && \
     chown -R yoctouser:yoctouser /home/yoctouser/.vnc && \
     chmod 0600 /home/yoctouser/.vnc/passwd && \
     /usr/sbin/locale-gen en_US.UTF-8
+
+COPY build-install-dumb-init.sh /
+RUN  bash /build-install-dumb-init.sh && \
+     rm /build-install-dumb-init.sh && \
+     apt-get clean
 
 USER yoctouser
 WORKDIR /home/yoctouser

@@ -32,6 +32,10 @@ builddir=/workdir/build
 # This is to guarantee yoctouser in the container has access to workdir
 chmod -R 777 $workdir
 
+# Ensure dumb-init is installed. This is to try and catch if
+# build-install-dumb-init.sh didn't work.
+docker run -t --rm --entrypoint=/bin/bash $image -c 'ls /usr/bin/dumb-init'
+
 # Try to build quilt-native which is small and fast to build.
 git clone --depth 1 --branch master \
           git://git.yoctoproject.org/poky $workdir/poky

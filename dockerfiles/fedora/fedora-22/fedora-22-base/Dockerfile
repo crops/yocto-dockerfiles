@@ -52,12 +52,16 @@ RUN dnf -y install \
         tmux \
         sudo \
         tigervnc-server && \
-    dnf -y clean all && \
     useradd -U -m yoctouser && \
     mkdir -p /home/yoctouser/.vnc && \
     echo "" | vncpasswd -f > /home/yoctouser/.vnc/passwd && \
     chown -R yoctouser:yoctouser /home/yoctouser/.vnc && \
     chmod 0600 /home/yoctouser/.vnc/passwd
+
+COPY build-install-dumb-init.sh /
+RUN  bash /build-install-dumb-init.sh && \
+     rm /build-install-dumb-init.sh && \
+     dnf -y clean all
 
 USER yoctouser
 WORKDIR /home/yoctouser
