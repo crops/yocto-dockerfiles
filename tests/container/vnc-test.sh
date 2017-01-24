@@ -25,7 +25,9 @@ set -x
 image=$1
 workdir=`mktemp -d --suffix=vnc`
 SCRIPT_DIR=$(dirname $(readlink -f $0))
-cp $SCRIPT_DIR/vnc-script.sh $workdir
+CONTAINER_SCRIPT=vnc-in-container-test.sh
+cp $SCRIPT_DIR/$CONTAINER_SCRIPT $workdir
 
-docker run -t --rm -v $workdir:/workdir --entrypoint=/workdir/vnc-script.sh --user=root  $image
+docker run -t --rm -v $workdir:/workdir \
+    --entrypoint=/workdir/$CONTAINER_SCRIPT --user=root  $image
 rm $workdir -rf
