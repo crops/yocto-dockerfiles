@@ -31,7 +31,6 @@ RUN apt-get update && \
         socat \
         python \
         python3 \
-        libsdl1.2-dev  \
         cpio \
         xz-utils \
         locales \

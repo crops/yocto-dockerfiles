@@ -45,7 +45,6 @@ RUN dnf -y install \
         findutils \
         which \
         cpio \
-        SDL-devel \
         xz \
         file \
         screen \

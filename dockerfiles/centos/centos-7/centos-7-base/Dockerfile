@@ -43,7 +43,6 @@ RUN yum -y install epel-release && \
         perl-Data-Dumper \
         perl-Text-ParseWords \
         perl-Thread-Queue \
-        SDL-devel \
         file \
         tigervnc-server \
         xz \

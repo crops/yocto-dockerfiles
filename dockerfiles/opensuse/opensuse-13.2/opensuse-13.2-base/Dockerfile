@@ -37,7 +37,6 @@ RUN zypper --non-interactive install python \
                    screen \
                    tmux \
                    sudo \
-                   libSDL-devel \
                    iproute2 \
                    net-tools \
                    xorg-x11-Xvnc && \
