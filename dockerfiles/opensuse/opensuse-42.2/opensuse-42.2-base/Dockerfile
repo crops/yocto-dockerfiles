@@ -35,7 +35,6 @@ RUN zypper --non-interactive install python \
                    python3-xml \
                    python3-curses \
                    sudo  \
-                   libSDL-devel  \
                    iproute2 \
                    net-tools \
                    xorg-x11-Xvnc && \
