@@ -16,7 +16,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 PIDS=()
-
+# some systems do not have enough tty's available to run all the
+# dumbinit tests in parallel. If the tty tests are failing try
+# setting SERIAL_BUILD=1
+if [ "$SERIAL_BUILD" == "" ]; then
+    SERIAL_BUILD=0
+fi
 trap cleanup SIGINT SIGTERM ERR
 function cleanup () {
     # Since we're calling kill again on the entire process group make sure
@@ -27,12 +32,23 @@ function cleanup () {
     exit 1
 }
 
+build_image() {
+    OUTPUTDIR=$1
+    REPO=$2
+    DISTRO_TO_BUILD=$3
+    TMPDIR=$OUTPUTDIR REPO=$REPO \
+        DISTRO_TO_BUILD=$DISTRO_TO_BUILD \
+        bash -c "$build_cont . >& \
+                    $OUTPUTDIR/build.log || \
+                    echo \"$DISTRO_TO_BUILD build failed\""
+}
+
 function build_images {
     PIDS=()
     localrepo=$2
     tmpdir=$(mktemp --tmpdir -d tmp-buildall.XXX)
 
-    echo "Building in $tmpdir"
+    echo "Building REPO=$REPO in $tmpdir"
 
     for i in $1; do
         DISTRO_TO_BUILD=$(basename $i)
@@ -40,10 +56,12 @@ function build_images {
         mkdir $OUTPUTDIR
 
         echo "Building $DISTRO_TO_BUILD"
-        TMPDIR=$OUTPUTDIR REPO=$REPO DISTRO_TO_BUILD=$DISTRO_TO_BUILD \
-            bash -c "$build_cont . >& \
-                        $OUTPUTDIR/build.log || \
-                        echo \"$DISTRO_TO_BUILD build failed\"" &
+
+        if [ $SERIAL_BUILD == "0" ]; then
+            build_image $OUTPUTDIR $REPO $DISTRO_TO_BUILD &
+        else
+            build_image $OUTPUTDIR $REPO $DISTRO_TO_BUILD
+        fi
         PIDS=( ${PIDS[@]} $! )
     done
 }
