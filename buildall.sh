@@ -19,45 +19,45 @@ PIDS=()
 
 trap cleanup SIGINT SIGTERM ERR
 function cleanup () {
-	# Since we're calling kill again on the entire process group make sure
-	# to not recurse into cleanup() by disabling the trap on SIGTERM.
-	trap - SIGTERM
-	kill -- -$$
+    # Since we're calling kill again on the entire process group make sure
+    # to not recurse into cleanup() by disabling the trap on SIGTERM.
+    trap - SIGTERM
+    kill -- -$$
 
-	exit 1
+    exit 1
 }
 
 function build_images {
-	PIDS=()
-	localrepo=$2
-	tmpdir=$(mktemp --tmpdir -d tmp-buildall.XXX)
+    PIDS=()
+    localrepo=$2
+    tmpdir=$(mktemp --tmpdir -d tmp-buildall.XXX)
 
-	echo "Building in $tmpdir"
+    echo "Building in $tmpdir"
 
-	for i in $1; do
-		DISTRO_TO_BUILD=$(basename $i)
-		OUTPUTDIR=$tmpdir/$DISTRO_TO_BUILD
-		mkdir $OUTPUTDIR
+    for i in $1; do
+        DISTRO_TO_BUILD=$(basename $i)
+        OUTPUTDIR=$tmpdir/$DISTRO_TO_BUILD
+        mkdir $OUTPUTDIR
 
-		echo "Building $DISTRO_TO_BUILD"
-		TMPDIR=$OUTPUTDIR REPO=$REPO DISTRO_TO_BUILD=$DISTRO_TO_BUILD \
-			bash -c "$build_cont . >& \
-			$OUTPUTDIR/build.log || \
-			echo \"$DISTRO_TO_BUILD build failed\"" &
-		PIDS=( ${PIDS[@]} $! )
-	done
+        echo "Building $DISTRO_TO_BUILD"
+        TMPDIR=$OUTPUTDIR REPO=$REPO DISTRO_TO_BUILD=$DISTRO_TO_BUILD \
+            bash -c "$build_cont . >& \
+                        $OUTPUTDIR/build.log || \
+                        echo \"$DISTRO_TO_BUILD build failed\"" &
+        PIDS=( ${PIDS[@]} $! )
+    done
 }
 
 function waitforimages {
-	numpids=${#PIDS[@]}
-	while [ $numpids -gt 0 ]; do
-		echo "waiting for $numpids images to be built"
-		wait -n
-		if [ $? -ne 0 ]; then
-			cleanup
-		fi
-		numpids=$((numpids-1))
-	done
+    numpids=${#PIDS[@]}
+    while [ $numpids -gt 0 ]; do
+        echo "waiting for $numpids images to be built"
+        wait -n
+        if [ $? -ne 0 ]; then
+            cleanup
+        fi
+        numpids=$((numpids-1))
+    done
 }
 
 
@@ -67,8 +67,8 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRIPTDIR
 
 if [ "x" = "x$REPO" ]; then
-	# Create a uid for the repo so we don't overwrite any user images
-	REPO=$(uuidgen)-yocto-docker-test
+    # Create a uid for the repo so we don't overwrite any user images
+    REPO=$(uuidgen)-yocto-docker-test
 fi
 
 build_cont=`readlink -f ./build_container.sh`
