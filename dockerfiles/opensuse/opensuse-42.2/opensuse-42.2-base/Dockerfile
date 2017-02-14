@@ -44,6 +44,7 @@ RUN zypper --non-interactive install python \
     chmod 0600 /etc/vncskel/.vnc/passwd && \
     useradd -U -m yoctouser
 
+
 COPY build-install-dumb-init.sh /
 RUN  bash /build-install-dumb-init.sh && \
      rm /build-install-dumb-init.sh
