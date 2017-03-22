@@ -38,6 +38,8 @@ RUN zypper --non-interactive install python \
                    tmux \
                    sudo \
                    libSDL-devel \
+                   iproute2 \
+                   net-tools \
                    xorg-x11-Xvnc && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
