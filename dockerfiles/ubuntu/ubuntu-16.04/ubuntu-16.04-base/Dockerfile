@@ -38,6 +38,7 @@ RUN apt-get update && \
         screen \
         tmux \
         sudo \
+        iputils-ping \
         fluxbox \
         tightvncserver && \
     cp -af /etc/skel/ /etc/vncskel/ && \

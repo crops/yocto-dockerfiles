@@ -36,6 +36,8 @@ RUN zypper --non-interactive install python \
                    python3-curses \
                    sudo  \
                    libSDL-devel  \
+                   iproute2 \
+                   net-tools \
                    xorg-x11-Xvnc && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
