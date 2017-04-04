@@ -36,7 +36,14 @@ cd $workdir
 baseimage=`grep FROM Dockerfile | sed -e 's/FROM //'`
 docker pull $baseimage
 
-docker build -t $REPO:$TAG .
+docker build \
+       --build-arg http_proxy=$http_proxy \
+       --build-arg HTTP_PROXY=$http_proxy \
+       --build-arg https_proxy=$https_proxy \
+       --build-arg HTTPS_PROXY=$https_proxy \
+       --build-arg no_proxy=$no_proxy \
+       --build-arg NO_PROXY=$no_proxy \
+       -t $REPO:$TAG .
 rm $workdir -rf
 cd -
 
@@ -56,7 +63,14 @@ cd $workdir
 sed -i -e "s#crops/yocto#$REPO#" Dockerfile
 
 # Lastly build the image
-docker build -t $REPO:$TAG .
+docker build \
+       --build-arg http_proxy=$http_proxy \
+       --build-arg HTTP_PROXY=$http_proxy \
+       --build-arg https_proxy=$https_proxy \
+       --build-arg HTTPS_PROXY=$https_proxy \
+       --build-arg no_proxy=$no_proxy \
+       --build-arg NO_PROXY=$no_proxy \
+       -t $REPO:$TAG .
 cd -
 
 # base tests
