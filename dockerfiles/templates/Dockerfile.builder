@@ -1,5 +1,5 @@
-# fedora-22-builder
-# Copyright (C) 2015-2016 Intel Corporation
+# DISTRO_TO_BUILD-builder
+# Copyright (C) 2015-2017 Intel Corporation
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as
@@ -14,14 +14,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-FROM crops/yocto:fedora-22-base
+FROM crops/yocto:DISTRO_TO_BUILD-base
 
 USER root
-COPY runbitbake.py /home/yoctouser/
-RUN chown -R yoctouser /home/yoctouser/ && \
-    chmod +x /home/yoctouser/runbitbake.py
+COPY runbitbake.py /usr/local/bin
+RUN chown  yoctouser:yoctouser /usr/local/bin/runbitbake.py && \
+    chmod +x /usr/local/bin/runbitbake.py
 
 USER yoctouser
 
 WORKDIR /home/yoctouser
-ENTRYPOINT ["/home/yoctouser/runbitbake.py"]
+ENTRYPOINT ["/usr/local/bin/runbitbake.py"]

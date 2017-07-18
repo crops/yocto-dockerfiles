@@ -51,6 +51,9 @@ cd -
 # can modify the Dockerfile to use whatever REPO is in the environment.
 TAG=$DISTRO_TO_BUILD-builder
 dockerdir=`find -name $TAG`
+# use the builder template to populate the distro specific Dockerfile
+cp dockerfiles/templates/Dockerfile.builder $dockerdir/Dockerfile
+sed -i "s/DISTRO_TO_BUILD/$DISTRO_TO_BUILD/g" $dockerdir/Dockerfile
 workdir=`mktemp --tmpdir -d tmp-$TAG.XXX`
 
 cp -r $dockerdir $workdir
