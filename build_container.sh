@@ -50,14 +50,11 @@ cd -
 # Now build the builder. We copy things to a temporary directory so that we
 # can modify the Dockerfile to use whatever REPO is in the environment.
 TAG=$DISTRO_TO_BUILD-builder
-dockerdir=`find -name $TAG`
-# use the builder template to populate the distro specific Dockerfile
-cp dockerfiles/templates/Dockerfile.builder $dockerdir/Dockerfile
-sed -i "s/DISTRO_TO_BUILD/$DISTRO_TO_BUILD/g" $dockerdir/Dockerfile
 workdir=`mktemp --tmpdir -d tmp-$TAG.XXX`
 
-cp -r $dockerdir $workdir
-workdir=$workdir/$TAG
+# use the builder template to populate the distro specific Dockerfile
+cp dockerfiles/templates/Dockerfile.builder $workdir/Dockerfile
+sed -i "s/DISTRO_TO_BUILD/$DISTRO_TO_BUILD/g" $workdir/Dockerfile
 
 cp helpers/runbitbake.py $workdir
 cd $workdir
