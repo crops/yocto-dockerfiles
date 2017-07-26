@@ -1,4 +1,4 @@
-# debian-8-base
+# debian-9-base
 # Copyright (C) 2015-2016 Intel Corporation
 #
 # This program is free software; you can redistribute it and/or modify
