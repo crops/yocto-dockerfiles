@@ -53,6 +53,7 @@ RUN dnf -y update && \
         tmux \
         sudo \
         fluxbox \
+        hostname \
         tigervnc-server && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
