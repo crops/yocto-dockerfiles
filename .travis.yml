@@ -32,4 +32,6 @@ before_install:
 script:
   - py.test -ra --pep8
   - ./build_container.sh
+
+after_success:
   - ./deploy.sh
