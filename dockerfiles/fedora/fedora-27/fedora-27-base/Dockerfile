@@ -54,6 +54,7 @@ RUN dnf -y update && \
         sudo \
         fluxbox \
         hostname \
+        procps \
         tigervnc-server && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
