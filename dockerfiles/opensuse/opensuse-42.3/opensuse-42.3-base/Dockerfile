@@ -21,6 +21,7 @@ RUN zypper --non-interactive install python \
                    gcc \
                    gcc-c++ \
                    git \
+                   subversion \
                    chrpath \
                    make \
                    wget \

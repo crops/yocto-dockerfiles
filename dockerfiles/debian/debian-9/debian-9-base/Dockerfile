@@ -22,6 +22,7 @@ RUN apt-get clean && \
         gawk \
         wget \
         git-core \
+        subversion \
         diffstat \
         unzip \
         sysstat \

@@ -32,6 +32,7 @@ RUN dnf -y update && \
         diffutils \
         diffstat \
         git \
+        subversion \
         cpp \
         gcc \
         gcc-c++ \
