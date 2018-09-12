@@ -21,6 +21,7 @@ RUN apt-get update && \
         gawk \
         wget \
         git-core \
+        subversion \
         diffstat \
         unzip \
         sysstat \

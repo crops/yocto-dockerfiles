@@ -33,6 +33,7 @@ RUN yum -y install epel-release && \
         diffutils \
         diffstat \
         git \
+        subversion \
         cpp \
         gcc \
         gcc-c++ \
