@@ -19,6 +19,7 @@ env:
     - DISTRO_TO_BUILD=ubuntu-16.04
     - DISTRO_TO_BUILD=ubuntu-17.10
     - DISTRO_TO_BUILD=ubuntu-18.04
+    - DISTRO_TO_BUILD=ubuntu-18.10
 
   global:
     - REPO=crops/yocto
