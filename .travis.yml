@@ -15,6 +15,7 @@ env:
     - DISTRO_TO_BUILD=fedora-27
     - DISTRO_TO_BUILD=opensuse-42.2
     - DISTRO_TO_BUILD=opensuse-42.3
+    - DISTRO_TO_BUILD=opensuse-15.0
     - DISTRO_TO_BUILD=ubuntu-14.04
     - DISTRO_TO_BUILD=ubuntu-16.04
     - DISTRO_TO_BUILD=ubuntu-17.10
