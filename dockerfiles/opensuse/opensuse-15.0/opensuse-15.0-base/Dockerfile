@@ -33,12 +33,13 @@ RUN zypper --non-interactive install python \
                    socat \
                    tar \
                    glibc-locale \
-                   python3-xml \
                    python3-curses \
                    sudo  \
                    iproute2 \
                    net-tools \
-                   xorg-x11-Xvnc && \
+                   xorg-x11-Xvnc \
+                   gzip \
+                   bzip2 && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
