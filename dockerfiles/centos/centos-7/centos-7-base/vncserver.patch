@@ -1,0 +1,10 @@
+@@ -63,8 +63,7 @@
+     = ("#!/bin/sh\n\n".
+        "unset SESSION_MANAGER\n".
+        "unset DBUS_SESSION_BUS_ADDRESS\n".
+-       "/etc/X11/xinit/xinitrc\n".
+-       "vncserver -kill \$DISPLAY\n");
++       "/etc/X11/xinit/xinitrc\n");
+ 
+ $defaultConfig
+     = ("## Supported server options to pass to vncserver upon invocation can be listed\n".
