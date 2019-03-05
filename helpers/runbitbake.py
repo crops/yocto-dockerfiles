@@ -124,7 +124,7 @@ if __name__ == '__main__':
     # can restore it by using builddir/tempdir/local.conf.orig
     tempdir = tempfile.mkdtemp(prefix="runbitbake-tmpdir", dir=builddir)
 
-    # Have to use bash since the default on ubuntu is dash which is garbage
+    # Have to use bash since the default on ubuntu is dash which won't work
     try:
         cmd = 'bash -c ". {}/oe-init-build-env {}"'.format(args.pokydir,
                                                            builddir)
