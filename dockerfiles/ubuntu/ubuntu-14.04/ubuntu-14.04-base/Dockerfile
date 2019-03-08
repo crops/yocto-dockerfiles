@@ -37,6 +37,7 @@ RUN apt-get update && \
         screen \
         tmux \
         fluxbox \
+        realpath \
         tightvncserver && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
