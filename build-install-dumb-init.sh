@@ -4,8 +4,8 @@ builddir=`mktemp -d` || exit 1
 cd $builddir || exit 1
 
 if grep -q CentOS /etc/*release; then
-    INSTALL_CMD="yum -y install python34-pip glibc-static"
-    REMOVE_CMD="yum -y remove python34-pip glibc-static"
+    INSTALL_CMD="yum -y install python36-pip glibc-static"
+    REMOVE_CMD="yum -y remove python36-pip glibc-static"
 elif grep -q Fedora /etc/*release; then
     INSTALL_CMD="dnf -y install glibc-static"
     REMOVE_CMD="dnf -y remove glibc-static"

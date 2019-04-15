@@ -26,7 +26,7 @@ RUN yum -y install epel-release && \
         bzip2 \
         gzip \
         python \
-        python34 \
+        python36 \
         unzip \
         perl \
         patch \
