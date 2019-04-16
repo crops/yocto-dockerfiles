@@ -180,7 +180,8 @@ def test_signal_forward(bitbake_signal_path, tmpdir, pokydir, test_signal):
 
     p = subprocess.Popen(shlex.split(cmd),
                          stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT, shell=False)
+                         stderr=subprocess.STDOUT, shell=False,
+                         universal_newlines=True)
 
     # Wait til program is started before sending the signal
     count = 0
