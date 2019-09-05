@@ -7,10 +7,8 @@ services:
 env:
   matrix:
     - DISTRO_TO_BUILD=centos-7
-    - DISTRO_TO_BUILD=debian-8
     - DISTRO_TO_BUILD=debian-9
     - DISTRO_TO_BUILD=debian-10
-    - DISTRO_TO_BUILD=fedora-27
     - DISTRO_TO_BUILD=fedora-28
     - DISTRO_TO_BUILD=fedora-29
     - DISTRO_TO_BUILD=fedora-30
@@ -19,7 +17,6 @@ env:
     - DISTRO_TO_BUILD=ubuntu-14.04
     - DISTRO_TO_BUILD=ubuntu-16.04
     - DISTRO_TO_BUILD=ubuntu-18.04
-    - DISTRO_TO_BUILD=ubuntu-18.10
     - DISTRO_TO_BUILD=ubuntu-19.04
 
   global:
