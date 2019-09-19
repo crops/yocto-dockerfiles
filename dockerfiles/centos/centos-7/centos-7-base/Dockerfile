@@ -64,9 +64,9 @@ RUN  bash build-install-dumb-init.sh && \
      rm /build-install-dumb-init.sh && \
      yum -y clean all
 
-COPY vncserver.patch /
-RUN  patch /usr/bin/vncserver /vncserver.patch && \
-     rm /vncserver.patch
+#COPY vncserver.patch /
+#RUN  patch /usr/bin/vncserver /vncserver.patch && \
+#     rm /vncserver.patch
 
 USER yoctouser
 WORKDIR /home/yoctouser
