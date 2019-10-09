@@ -32,19 +32,23 @@ builddir=/workdir/build
 # This is to guarantee yoctouser in the container has access to workdir
 chmod -R 777 $workdir
 
+# In each instance below where docker is started, the workdir is changed to one
+# that should be accessible for the uid:gid specified. Otherwise starting the
+# container may fail.
+
 # Ensure dumb-init is installed. This is to try and catch if
 # build-install-dumb-init.sh didn't work.
-docker run -t --rm --entrypoint=/bin/bash -u $(id -u):$(id -g) $image -c 'ls /usr/bin/dumb-init'
+docker run -t --rm --entrypoint=/bin/bash -u $(id -u):$(id -g) -w '/' $image -c 'ls /usr/bin/dumb-init'
 
 # Try to build quilt-native which is small and fast to build.
 git clone --depth 1 --branch master \
           git://git.yoctoproject.org/poky $workdir/poky
-docker run -t --rm -v $workdir:/workdir -u $(id -u):$(id -g) $image --pokydir=$pokydir \
+docker run -t --rm -v $workdir:/workdir -u $(id -u):$(id -g) -w '/' $image --pokydir=$pokydir \
            -b $builddir -t quilt-native
 
 # Since yoctouser in the container may create files that the travis user
 # can't delete, run the container again to delete the files in the directory.
-docker run -t --rm -v $workdir:/workdir -u $(id -u):$(id -g) --entrypoint=/bin/rm $image \
+docker run -t --rm -v $workdir:/workdir -u $(id -u):$(id -g) -w '/' --entrypoint=/bin/rm $image \
            $builddir -rf
 
 rm $workdir -rf
