@@ -20,7 +20,7 @@
 set -e
 
 # DISTRO_TO_BUILD is essentially the prefix to the "base" and "builder"
-# directories you plan to use. i.e. "fedora-23" or "ubuntu-14.04"
+# directories you plan to use. i.e. "fedora-23" or "ubuntu-16.04"
 
 # First build the base
 TAG=$DISTRO_TO_BUILD-base
