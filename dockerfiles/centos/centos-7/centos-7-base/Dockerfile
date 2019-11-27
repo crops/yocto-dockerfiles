@@ -1,5 +1,5 @@
 # centos-7-base
-# Copyright (C) 2015-2016 Intel Corporation
+# Copyright (C) 2015-2019 Intel Corporation
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as
@@ -58,6 +58,15 @@ RUN yum -y install epel-release && \
     chmod 0600 /etc/vncskel/.vnc/passwd && \
     groupadd -g 1000 yoctouser && \
     useradd -u 1000 -g yoctouser -m yoctouser
+
+# Install the buildtools-tarball so tar is a new enough version to satisy the
+# 1.28 requirment added by the 2c7624c17e43f9215cf7dcebf7258d28711bc3ce commit
+# to poky.
+RUN  wget http://downloads.yoctoproject.org/releases/yocto/yocto-3.0/buildtools/x86_64-buildtools-nativesdk-standalone-3.0.sh || exit 1 && \
+     echo "c2a077fa1be15d94bf9385a8d478a146 x86_64-buildtools-nativesdk-standalone-3.0.sh" > x86_64-buildtools-nativesdk-standalone-3.0.sh.md5sum || exit 1 && \
+     md5sum -c x86_64-buildtools-nativesdk-standalone-3.0.sh.md5sum || exit 1 && \
+     chmod +x x86_64-buildtools-nativesdk-standalone-3.0.sh || exit 1 && \
+     ./x86_64-buildtools-nativesdk-standalone-3.0.sh || exit 1
 
 COPY build-install-dumb-init.sh /
 RUN  bash build-install-dumb-init.sh && \

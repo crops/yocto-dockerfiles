@@ -2,7 +2,7 @@
 
 # runbitbake.py
 #
-# Copyright (C) 2016 Intel Corporation
+# Copyright (C) 2016-2019 Intel Corporation
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as
@@ -54,6 +54,7 @@ workdir=`mktemp --tmpdir -d tmp-$TAG.XXX`
 
 # use the builder template to populate the distro specific Dockerfile
 cp dockerfiles/templates/Dockerfile.builder $workdir/Dockerfile
+cp distro-entry.sh $workdir
 sed -i "s/DISTRO_TO_BUILD/$DISTRO_TO_BUILD/g" $workdir/Dockerfile
 
 cp helpers/runbitbake.py $workdir

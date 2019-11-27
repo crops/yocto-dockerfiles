@@ -1,5 +1,5 @@
-# DISTRO_TO_BUILD-builder
-# Copyright (C) 2015-2019 Intel Corporation
+#!/bin/bash
+# Copyright (C) 2019 Intel Corporation
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as
@@ -12,17 +12,12 @@
 #
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-FROM crops/yocto:DISTRO_TO_BUILD-base
+# This entry point is so that we can do distro specific changes to the launch.
+if grep -q CentOS /etc/*release; then
+    # This is so that tar >= 1.28 can be used, which is required to pass the
+    # sanity checks as of poky commit 2c7624c17e43f9215cf7dcebf7258d28711bc3ce.
+    . /opt/poky/3.0/environment-setup-x86_64-pokysdk-linux || exit 1
+fi
 
-USER root
-COPY distro-entry.sh runbitbake.py /usr/local/bin/
-RUN chown  yoctouser:yoctouser /usr/local/bin/runbitbake.py && \
-    chmod +x /usr/local/bin/runbitbake.py && \
-    chmod +x /usr/local/bin/distro-entry.sh
-
-USER yoctouser
-
-WORKDIR /home/yoctouser
-ENTRYPOINT ["/usr/local/bin/distro-entry.sh", "/usr/local/bin/runbitbake.py"]
+exec "$@"
