@@ -40,7 +40,8 @@ RUN apt-get update && \
         sudo \
         iputils-ping \
         fluxbox \
-        tightvncserver && \
+        tightvncserver \
+        libncurses5-dev && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
