@@ -58,7 +58,8 @@ RUN dnf -y update && \
         fluxbox \
         hostname \
         procps \
-        tigervnc-server && \
+        tigervnc-server \
+        git-lfs && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \

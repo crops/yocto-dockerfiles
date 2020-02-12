@@ -41,7 +41,8 @@ RUN apt-get clean && \
         sudo \
         fluxbox \
         procps \
-        tightvncserver && \
+        tightvncserver \
+        git-lfs && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
