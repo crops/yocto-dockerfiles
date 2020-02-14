@@ -45,6 +45,9 @@ RUN zypper --non-interactive install python \
     mkdir  /etc/vncskel/.vnc && \
     echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
     chmod 0600 /etc/vncskel/.vnc/passwd && \
+    # Repo is a useful tool for checking out multiple git repos
+    wget https://storage.googleapis.com/git-repo-downloads/repo -O /usr/local/bin/repo && \
+    chmod +x /usr/local/bin/repo && \
     useradd -U -m yoctouser
 
 COPY build-install-dumb-init.sh /
