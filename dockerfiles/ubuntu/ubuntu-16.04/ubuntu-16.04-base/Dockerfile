@@ -16,7 +16,12 @@
 
 FROM ubuntu:16.04
 
-RUN apt-get update && \
+# apt-key is using fingerprint from https://packagecloud.io/github/git-lfs/gpgkey
+# wget -O - https://packagecloud.io/github/git-lfs/gpgkey | gpg --with-fingerprint
+RUN apt-get update && apt-get install -y apt-transport-https && \
+    echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ xenial main" >> /etc/apt/sources.list && \
+    apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 6D398DBD30DD78941E2C4797FE2A5F8BDC282033 && \
+    apt-get update && \
     apt-get install -y \
         gawk \
         wget \
