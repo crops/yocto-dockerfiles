@@ -16,7 +16,18 @@
 
 FROM opensuse/leap:15.0
 
-RUN zypper --non-interactive install python \
+RUN echo $'[github_git-lfs] \n\
+name=github_git-lfs \n\
+baseurl=https://packagecloud.io/github/git-lfs/opensuse/15.0/$basearch \n\
+repo_gpgcheck=1 \n\
+pkg_gpgcheck=0 \n\
+enabled=1 \n\
+gpgkey=https://packagecloud.io/github/git-lfs/gpgkey \n\
+autorefresh=1 \n\
+type=rpm-md \n\
+' >> /etc/zypp/repos.d/github_git-lfs.repo && \
+    zypper --gpg-auto-import-keys refresh github_git-lfs && \
+    zypper --non-interactive install python \
                    python3 \
                    gcc \
                    gcc-c++ \
@@ -39,7 +50,8 @@ RUN zypper --non-interactive install python \
                    net-tools \
                    xorg-x11-Xvnc \
                    gzip \
-                   bzip2 && \
+                   bzip2 \
+                   git-lfs && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
