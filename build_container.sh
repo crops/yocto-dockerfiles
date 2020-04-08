@@ -19,6 +19,11 @@
 
 set -e
 
+# Allow the user to specify another command to use for building such as podman
+if [ "${ENGINE_CMD}" = "" ]; then
+    ENGINE_CMD="docker"
+fi
+
 # DISTRO_TO_BUILD is essentially the prefix to the "base" and "builder"
 # directories you plan to use. i.e. "fedora-23" or "ubuntu-16.04"
 
@@ -34,9 +39,9 @@ cp build-install-dumb-init.sh $workdir
 cd $workdir
 
 baseimage=`grep FROM Dockerfile | sed -e 's/FROM //'`
-docker pull $baseimage
+${ENGINE_CMD} pull $baseimage
 
-docker build \
+${ENGINE_CMD} build \
        --build-arg http_proxy=$http_proxy \
        --build-arg HTTP_PROXY=$http_proxy \
        --build-arg https_proxy=$https_proxy \
@@ -64,7 +69,7 @@ cd $workdir
 sed -i -e "s#crops/yocto#$REPO#" Dockerfile
 
 # Lastly build the image
-docker build \
+${ENGINE_CMD} build \
        --build-arg http_proxy=$http_proxy \
        --build-arg HTTP_PROXY=$http_proxy \
        --build-arg https_proxy=$https_proxy \
@@ -75,8 +80,10 @@ docker build \
 cd -
 
 # base tests
-./tests/container/vnc-test.sh $REPO:$DISTRO_TO_BUILD-base
+ENGINE_CMD=${ENGINE_CMD}
+    ./tests/container/vnc-test.sh $REPO:$DISTRO_TO_BUILD-base
 # builder tests
-./tests/container/smoke.sh $REPO:$DISTRO_TO_BUILD-builder
+ENGINE_CMD=${ENGINE_CMD}
+    ./tests/container/smoke.sh $REPO:$DISTRO_TO_BUILD-builder
 
 rm $workdir -rf

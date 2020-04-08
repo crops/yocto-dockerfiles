@@ -18,10 +18,15 @@
 # a loop in travis.yml isn't a great thing.
 set -e
 
+# Allow the user to specify another command to use for building such as podman
+if [ "${ENGINE_CMD}" = "" ]; then
+    ENGINE_CMD="docker"
+fi
+
 # Don't deploy on pull requests because it could just be junk code that won't
 # get merged
 if [ "${TRAVIS_PULL_REQUEST}" = "false" -a "${TRAVIS_BRANCH}" = "master" ]; then
 
-    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    docker push ${REPO}
+    ${ENGINE_CMD} login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    ${ENGINE_CMD} push ${REPO}
 fi

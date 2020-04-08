@@ -23,6 +23,10 @@ set -x
 echo $USER
 id
 
+if [ "${ENGINE_CMD}" = "" ]; then
+    ENGINE_CMD="docker"
+fi
+
 # Pass in the image that was built for docker
 image=$1
 workdir=`mktemp -d --suffix=smoke`
@@ -38,17 +42,17 @@ chmod -R 777 $workdir
 
 # Ensure dumb-init is installed. This is to try and catch if
 # build-install-dumb-init.sh didn't work.
-docker run -t --rm --entrypoint=/bin/bash -u $(id -u):$(id -g) -w '/' $image -c 'ls /usr/bin/dumb-init'
+${ENGINE_CMD} run -t --rm --entrypoint=/bin/bash -u $(id -u):$(id -g) -w '/' $image -c 'ls /usr/bin/dumb-init'
 
 # Try to build quilt-native which is small and fast to build.
 git clone --depth 1 --branch master \
           git://git.yoctoproject.org/poky $workdir/poky
-docker run -t --rm -v $workdir:/workdir -u $(id -u):$(id -g) -w '/' $image --pokydir=$pokydir \
-           -b $builddir -t quilt-native
+${ENGINE_CMD} run -t --rm -v $workdir:/workdir -u $(id -u):$(id -g) -w '/' $image --pokydir=$pokydir \
+                  -b $builddir -t quilt-native
 
 # Since yoctouser in the container may create files that the travis user
 # can't delete, run the container again to delete the files in the directory.
-docker run -t --rm -v $workdir:/workdir -u $(id -u):$(id -g) -w '/' --entrypoint=/bin/rm $image \
-           $builddir -rf
+${ENGINE_CMD} run -t --rm -v $workdir:/workdir -u $(id -u):$(id -g) -w '/' --entrypoint=/bin/rm $image \
+                  $builddir -rf
 
 rm $workdir -rf
