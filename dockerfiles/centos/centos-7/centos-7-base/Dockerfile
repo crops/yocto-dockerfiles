@@ -16,7 +16,7 @@
 
 FROM centos:centos7
 
-RUN yum -y install epel-release && \
+RUN yum -y install epel-release centos-release-scl && \
     yum -y update && \
     yum -y install \
         gawk \
@@ -50,7 +50,9 @@ RUN yum -y install epel-release && \
         screen \
         tmux \
         sudo \
+        devtoolset-8 \
         which && \
+    rm /opt/rh/devtoolset-8/root/usr/bin/sudo && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
@@ -66,7 +68,7 @@ RUN  wget http://downloads.yoctoproject.org/releases/yocto/yocto-3.0/buildtools/
      echo "c2a077fa1be15d94bf9385a8d478a146 x86_64-buildtools-nativesdk-standalone-3.0.sh" > x86_64-buildtools-nativesdk-standalone-3.0.sh.md5sum || exit 1 && \
      md5sum -c x86_64-buildtools-nativesdk-standalone-3.0.sh.md5sum || exit 1 && \
      chmod +x x86_64-buildtools-nativesdk-standalone-3.0.sh || exit 1 && \
-     ./x86_64-buildtools-nativesdk-standalone-3.0.sh || exit 1
+     ./x86_64-buildtools-nativesdk-standalone-3.0.sh -y || exit 1
 
 COPY build-install-dumb-init.sh /
 RUN  bash build-install-dumb-init.sh && \
