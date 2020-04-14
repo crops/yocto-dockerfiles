@@ -16,7 +16,6 @@ env:
     - DISTRO_TO_BUILD=opensuse-15.1
     - DISTRO_TO_BUILD=ubuntu-16.04
     - DISTRO_TO_BUILD=ubuntu-18.04
-    - DISTRO_TO_BUILD=ubuntu-19.04
 
   global:
     - REPO=crops/yocto
