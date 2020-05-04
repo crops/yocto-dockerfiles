@@ -27,6 +27,7 @@ RUN apt-get update && \
         sysstat \
         texinfo \
         gcc-multilib \
+        g++-multilib \
         build-essential \
         chrpath \
         socat \
