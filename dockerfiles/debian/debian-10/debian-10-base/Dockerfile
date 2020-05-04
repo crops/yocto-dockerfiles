@@ -28,6 +28,7 @@ RUN apt-get clean && \
         sysstat \
         texinfo \
         gcc-multilib \
+        g++-multilib \
         build-essential \
         chrpath \
         socat \
