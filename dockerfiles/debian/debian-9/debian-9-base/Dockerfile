@@ -18,7 +18,7 @@ FROM debian:9
 
 RUN apt-get clean && \
     apt-get update && \
-    apt-get install -y \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
         gawk \
         wget \
         git-core \
