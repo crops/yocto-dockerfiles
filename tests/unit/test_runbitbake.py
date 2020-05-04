@@ -144,7 +144,7 @@ class AddExtraTest(RunBitbakeTestBase):
             localconflines = set(f.readlines())
 
         intersection = extraconflines & localconflines
-        self.assertListEqual(list(intersection), list(extraconflines))
+        self.assertListEqual(sorted(intersection), sorted(extraconflines))
 
 
 @pytest.fixture
