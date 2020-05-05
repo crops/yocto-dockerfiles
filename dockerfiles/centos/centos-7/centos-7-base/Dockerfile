@@ -51,6 +51,7 @@ RUN yum -y install epel-release centos-release-scl && \
         tmux \
         sudo \
         devtoolset-8 \
+	git-lfs \
         which && \
     rm /opt/rh/devtoolset-8/root/usr/bin/sudo && \
     cp -af /etc/skel/ /etc/vncskel/ && \

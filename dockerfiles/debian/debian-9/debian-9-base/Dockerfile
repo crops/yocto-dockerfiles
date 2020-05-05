@@ -16,7 +16,8 @@
 
 FROM debian:9
 
-RUN apt-get clean && \
+RUN echo "deb http://deb.debian.org/debian stretch-backports main" >> /etc/apt/sources.list && \
+    apt-get clean && \
     apt-get update && \
     apt-get install -y \
         gawk \
@@ -42,6 +43,7 @@ RUN apt-get clean && \
         fluxbox \
         procps \
         tightvncserver && \
+    apt-get install -y -t stretch-backports git-lfs && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
