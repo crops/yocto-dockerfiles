@@ -61,14 +61,12 @@ RUN yum -y install epel-release centos-release-scl && \
     groupadd -g 1000 yoctouser && \
     useradd -u 1000 -g yoctouser -m yoctouser
 
-# Install the buildtools-tarball so tar is a new enough version to satisy the
-# 1.28 requirment added by the 2c7624c17e43f9215cf7dcebf7258d28711bc3ce commit
-# to poky.
-RUN  wget http://downloads.yoctoproject.org/releases/yocto/yocto-3.0/buildtools/x86_64-buildtools-nativesdk-standalone-3.0.sh || exit 1 && \
-     echo "c2a077fa1be15d94bf9385a8d478a146 x86_64-buildtools-nativesdk-standalone-3.0.sh" > x86_64-buildtools-nativesdk-standalone-3.0.sh.md5sum || exit 1 && \
-     md5sum -c x86_64-buildtools-nativesdk-standalone-3.0.sh.md5sum || exit 1 && \
-     chmod +x x86_64-buildtools-nativesdk-standalone-3.0.sh || exit 1 && \
-     ./x86_64-buildtools-nativesdk-standalone-3.0.sh -y || exit 1
+# The versions of gcc, tar and other tools found in Centos 7 are now too old to
+# build recent Yocto Project releases. Install the buildtools tarball to
+# provide the required tools.
+COPY install-buildtools.sh /
+RUN bash /install-buildtools.sh && \
+    rm /install-buildtools.sh
 
 COPY build-install-dumb-init.sh /
 RUN  bash build-install-dumb-init.sh && \

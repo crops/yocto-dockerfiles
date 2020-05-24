@@ -36,6 +36,7 @@ cp -r $dockerdir $workdir
 workdir=$workdir/$TAG
 
 cp build-install-dumb-init.sh $workdir
+cp install-buildtools.sh $workdir
 cd $workdir
 
 baseimage=`grep FROM Dockerfile | sed -e 's/FROM //'`
