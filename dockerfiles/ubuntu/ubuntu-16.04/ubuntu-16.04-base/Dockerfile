@@ -52,6 +52,13 @@ RUN apt-get update && \
     echo 'dash dash/sh boolean false' | debconf-set-selections && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
+# The versions of gcc, tar and other tools found in Ubuntu 16.04 are now too
+# old to build recent Yocto Project releases. Install the buildtools tarball to
+# provide the required tools.
+COPY install-buildtools.sh /
+RUN bash /install-buildtools.sh && \
+    rm /install-buildtools.sh
+
 COPY build-install-dumb-init.sh /
 RUN  bash /build-install-dumb-init.sh && \
      rm /build-install-dumb-init.sh && \
