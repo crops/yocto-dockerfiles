@@ -2,12 +2,11 @@
 
 set -e
 
-wget http://downloads.yoctoproject.org/releases/yocto/yocto-3.0/buildtools/x86_64-buildtools-nativesdk-standalone-3.0.sh
+wget https://downloads.yoctoproject.org/releases/yocto/yocto-3.1/buildtools/x86_64-buildtools-extended-nativesdk-standalone-3.1.sh
 
-echo "c2a077fa1be15d94bf9385a8d478a146 x86_64-buildtools-nativesdk-standalone-3.0.sh" > x86_64-buildtools-nativesdk-standalone-3.0.sh.md5sum
-md5sum -c x86_64-buildtools-nativesdk-standalone-3.0.sh.md5sum
+echo "4fd00aee6a1e8d85920db8309ea10acb29cbfe9f411a4b127597aabf2013afd4  x86_64-buildtools-extended-nativesdk-standalone-3.1.sh" > SHA256SUMS
+sha256sum -c SHA256SUMS
+rm SHA256SUMS
 
-chmod +x x86_64-buildtools-nativesdk-standalone-3.0.sh
-./x86_64-buildtools-nativesdk-standalone-3.0.sh -y
-
-rm x86_64-buildtools-nativesdk-standalone-3.0.sh
+bash x86_64-buildtools-extended-nativesdk-standalone-3.1.sh -y
+rm x86_64-buildtools-extended-nativesdk-standalone-3.1.sh
