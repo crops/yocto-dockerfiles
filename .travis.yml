@@ -4,6 +4,10 @@ sudo: required
 services:
   - docker
 
+arch:
+  - x86_64
+  - arm64
+
 env:
   matrix:
     - DISTRO_TO_BUILD=centos-7
