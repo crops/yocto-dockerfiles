@@ -26,8 +26,6 @@ RUN apt-get update && \
         unzip \
         sysstat \
         texinfo \
-        gcc-multilib \
-        g++-multilib \
         build-essential \
         chrpath \
         socat \
@@ -53,9 +51,11 @@ RUN apt-get update && \
     echo 'dash dash/sh boolean false' | debconf-set-selections && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
-COPY build-install-dumb-init.sh /
+COPY build-install-dumb-init.sh install-multilib.sh /
 RUN  bash /build-install-dumb-init.sh && \
      rm /build-install-dumb-init.sh && \
+     bash /install-multilib.sh && \
+     rm /install-multilib.sh && \
      apt-get clean
 
 USER yoctouser

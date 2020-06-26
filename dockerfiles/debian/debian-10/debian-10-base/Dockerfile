@@ -27,8 +27,6 @@ RUN apt-get clean && \
         unzip \
         sysstat \
         texinfo \
-        gcc-multilib \
-        g++-multilib \
         build-essential \
         chrpath \
         socat \
@@ -51,9 +49,11 @@ RUN apt-get clean && \
     useradd -U -m yoctouser && \
     echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
 
-COPY build-install-dumb-init.sh /
+COPY build-install-dumb-init.sh install-multilib.sh /
 RUN  bash /build-install-dumb-init.sh && \
      rm /build-install-dumb-init.sh && \
+     bash /install-multilib.sh && \
+     rm /install-multilib.sh && \
      apt-get clean
 
 USER yoctouser

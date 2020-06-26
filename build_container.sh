@@ -35,6 +35,7 @@ workdir=`mktemp --tmpdir -d tmp-$TAG.XXX`
 cp -r $dockerdir $workdir
 workdir=$workdir/$TAG
 
+cp install-multilib.sh $workdir
 cp build-install-dumb-init.sh $workdir
 cp install-buildtools.sh $workdir
 cd $workdir
