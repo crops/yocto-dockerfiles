@@ -9,6 +9,8 @@ env:
     - DISTRO_TO_BUILD=centos-7
     - DISTRO_TO_BUILD=debian-9
     - DISTRO_TO_BUILD=debian-10
+    - DISTRO_TO_BUILD=fedora-31
+    - DISTRO_TO_BUILD=fedora-32
     - DISTRO_TO_BUILD=opensuse-15.1
     - DISTRO_TO_BUILD=ubuntu-16.04
     - DISTRO_TO_BUILD=ubuntu-18.04
