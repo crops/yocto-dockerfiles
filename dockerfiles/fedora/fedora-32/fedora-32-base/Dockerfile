@@ -49,6 +49,7 @@ RUN dnf -y update && \
         python3-jinja2 \
         python3-pexpect \
         python3-pip \
+        python-unversioned-command \
         rpcgen \
         screen \
         SDL-devel \
