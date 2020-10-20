@@ -44,8 +44,9 @@ fi
 ### for the next.
 ###
 exec sudo -H -u vncuser /bin/bash - <<EOF
+
 # start the server
-vncserver -rfbport 5900 -name YOCTO :1
+Xvnc -rfbport 5900 :1 >& /home/vncuser/.vnc/Xvnc.log &
 sleep 2
 
 if grep Listening  /home/vncuser/.vnc/*.log | grep 5900 ; then
