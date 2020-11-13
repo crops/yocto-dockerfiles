@@ -32,6 +32,7 @@ RUN apt-get clean && \
         socat \
         python \
         python3 \
+        python3-pip \
         cpio \
         xz-utils \
         locales \
@@ -41,6 +42,7 @@ RUN apt-get clean && \
         fluxbox \
         procps \
         tightvncserver && \
+    pip3 install pipenv && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
