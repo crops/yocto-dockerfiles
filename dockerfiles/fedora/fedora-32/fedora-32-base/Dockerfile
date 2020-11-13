@@ -50,6 +50,7 @@ RUN dnf -y update && \
         python3-pexpect \
         python3-pip \
         python-unversioned-command \
+        pipenv \
         rpcgen \
         screen \
         SDL-devel \

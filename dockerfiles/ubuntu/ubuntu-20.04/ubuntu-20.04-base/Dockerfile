@@ -31,6 +31,7 @@ RUN apt-get update && \
         socat \
         python \
         python3 \
+        python3-pip \
         xz-utils  \
         locales \
         cpio \
@@ -41,6 +42,7 @@ RUN apt-get update && \
         iproute2 \
         fluxbox \
         tightvncserver && \
+    pip3 install --system pipenv && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
