@@ -7,7 +7,7 @@
 FROM centos:centos8
 
 RUN dnf install -y 'dnf-command(config-manager)' && \
-    dnf config-manager --set-enabled PowerTools && \
+    dnf config-manager --set-enabled powertools && \
     dnf -y install epel-release && \
     dnf -y update && \
     dnf -y install \
