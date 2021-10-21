@@ -30,7 +30,9 @@ RUN apt-get update && \
         iputils-ping \
         iproute2 \
         fluxbox \
-        tightvncserver && \
+        tightvncserver \
+        liblz4-tool \
+        zstd && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \

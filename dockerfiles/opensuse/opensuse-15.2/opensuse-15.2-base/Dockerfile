@@ -16,6 +16,7 @@ RUN zypper --non-interactive install python \
                    glibc-locale \
                    gzip \
                    iproute2 \
+		   lz4 \
                    make \
                    makeinfo \
                    net-tools \
@@ -29,7 +30,8 @@ RUN zypper --non-interactive install python \
                    sudo  \
                    tar \
                    wget \
-                   xorg-x11-Xvnc && \
+                   xorg-x11-Xvnc \
+                   zstd && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
