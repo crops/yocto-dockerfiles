@@ -1,5 +1,11 @@
 #! /bin/bash
 
+# install-buildtools.sh
+#
+# Copyright (C) 2020-2021 Intel Corporation
+#
+# SPDX-License-Identifier: GPL-2.0-only
+#
 set -e
 
 if [ "$(uname -m)" = "aarch64" ]; then

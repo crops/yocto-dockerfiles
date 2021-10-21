@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+#
+# Copyright (C) 2016-2021 Intel Corporation
+#
+# SPDX-License-Identifier: GPL-2.0-only
+#
 
 import unittest
 import os
