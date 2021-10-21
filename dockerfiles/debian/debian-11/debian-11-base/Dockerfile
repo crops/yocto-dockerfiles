@@ -1,0 +1,53 @@
+# debian-11-base
+# Copyright (C) 2015-2021 Intel Corporation
+#
+# SPDX-License-Identifier: GPL-2.0-only
+#
+
+FROM debian:11
+
+RUN apt-get clean && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        build-essential \
+        chrpath \
+        cpio \
+        diffstat \
+        fluxbox \
+        gawk \
+        git-core \
+        locales \
+	lz4 \
+        procps \
+        python \
+        python3 \
+        screen \
+        socat \
+        subversion \
+        sudo \
+        sysstat \
+        texinfo \
+        tightvncserver \
+        tmux \
+        unzip \
+        wget \
+        xz-utils \
+	zstd && \
+    cp -af /etc/skel/ /etc/vncskel/ && \
+    echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
+    mkdir  /etc/vncskel/.vnc && \
+    echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
+    chmod 0600 /etc/vncskel/.vnc/passwd && \
+    useradd -U -m yoctouser && \
+    echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
+
+COPY build-install-dumb-init.sh install-multilib.sh /
+RUN  bash /build-install-dumb-init.sh && \
+     rm /build-install-dumb-init.sh && \
+     bash /install-multilib.sh && \
+     rm /install-multilib.sh && \
+     apt-get clean
+
+USER yoctouser
+WORKDIR /home/yoctouser
+CMD /bin/bash
