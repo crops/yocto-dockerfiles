@@ -26,17 +26,11 @@ else
     exit 1
 fi
 
-wget https://github.com/Yelp/dumb-init/archive/v1.2.0.tar.gz || exit 1
-echo "74486997321bd939cad2ee6af030f481d39751bc9aa0ece84ed55f864e309a3f  v1.2.0.tar.gz" > sha256sums || exit 1
-
-wget https://github.com/Yelp/dumb-init/commit/0708f2779cbcd10e08c6e4cb6551ccea93d75f09.patch || exit 1
-echo "eeabd5b66cd2fae2d2edb38f47b3325c56138521f1ea3381042ab156b17785cc  0708f2779cbcd10e08c6e4cb6551ccea93d75f09.patch" >> sha256sums || exit 1
+wget https://github.com/Yelp/dumb-init/archive/v1.2.5.tar.gz || exit 1
+echo "3eda470d8a4a89123f4516d26877a727c0945006c8830b7e3bad717a5f6efc4e  v1.2.5.tar.gz" > sha256sums || exit 1
 
 sha256sum -c sha256sums || exit 1
-tar xf v1.2.0.tar.gz || exit 1
-
-# patch to increase sleep in a test that can fail on slower systems
-patch -d dumb-init-1.2.0 -p1 < 0708f2779cbcd10e08c6e4cb6551ccea93d75f09.patch
+tar xf v1.2.5.tar.gz || exit 1
 
 # Replace the versions of python used for testing dumb-init. Since it is
 # testing c code, and not python it shouldn't matter. Also remove the
