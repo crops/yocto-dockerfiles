@@ -24,6 +24,7 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
         glibc-devel \
         glibc-langpack-en \
         gzip \
+	lz4 \
         make \
         patch \
         perl \
@@ -43,7 +44,8 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
         unzip \
         wget \
         which \
-        xz && \
+        xz \
+	zstd && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \

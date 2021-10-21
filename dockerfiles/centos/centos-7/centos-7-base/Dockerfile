@@ -40,7 +40,9 @@ RUN yum -y install epel-release centos-release-scl && \
         screen \
         tmux \
         sudo \
-        which && \
+        which \
+        lz4 \
+        zstd && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \

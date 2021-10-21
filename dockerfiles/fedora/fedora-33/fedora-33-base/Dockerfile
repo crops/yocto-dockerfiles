@@ -60,7 +60,9 @@ RUN dnf -y update && \
         sudo \
         screen \
         tigervnc-server \
-        tmux && \
+        tmux \
+        lz4 \
+        zstd && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
