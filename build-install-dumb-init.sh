@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# build-install-dumb-init.sh
+#
+# Copyright (C) 2017-2021 Intel Corporation
+#
+# SPDX-License-Identifier: GPL-2.0-only
+#
+
 builddir=`mktemp -d` || exit 1
 cd $builddir || exit 1
 
