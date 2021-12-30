@@ -19,8 +19,10 @@ if grep -q Alma /etc/*release; then
     dnf -y install xorg-x11-utils
 elif grep -q CentOS /etc/*release; then
     yum -y install xorg-x11-utils
+# since fedora-34, xdpyinfo is its own package
+# since fedora-35, xorg-x11-utils has been dropped
 elif grep -q Fedora /etc/*release; then
-    dnf -y install xorg-x11-utils
+    dnf -y install xdpyinfo
 elif grep -q Ubuntu /etc/*release || grep -q Debian /etc/*release; then
     # Ubuntu/debian brings in xdpyinfo by default
     true;
