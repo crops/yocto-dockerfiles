@@ -3,24 +3,27 @@
 # install-buildtools.sh
 #
 # Copyright (C) 2020-2021 Intel Corporation
+# Copyright (C) 2022 Konsulko Group
 #
 # SPDX-License-Identifier: GPL-2.0-only
 #
 set -e
 
+RELEASE_VERSION="3.4.1"
+
 if [ "$(uname -m)" = "aarch64" ]; then
-    BUILDTOOLS="aarch64-buildtools-extended-nativesdk-standalone-3.1.3.sh"
-    SHA256SUM="ea342902dafb53f6f7b7df948263a086b116cb0944051e930a8c1edae3ea3e0d"
+    BUILDTOOLS="aarch64-buildtools-extended-nativesdk-standalone-${RELEASE_VERSION}.sh"
+    SHA256SUM="ed9fcf3f0236068421e8cca431118455ab0ebd3901274387bb6484bf0c512034"
 elif [ "$(uname -m)" = "x86_64" ]; then
-    BUILDTOOLS="x86_64-buildtools-extended-nativesdk-standalone-3.1.3.sh"
-    SHA256SUM="809de42e33b86d964621752e914883077aeef7da4fe8c7f188669e222e739256"
+    BUILDTOOLS="x86_64-buildtools-extended-nativesdk-standalone-${RELEASE_VERSION}.sh"
+    SHA256SUM="a441eed44f35512ea697faef270b9ab9ce6c280265207fabf36bf2bff6c89018"
 else
     echo "Unsupported architecture, can't install buildtools."
     exit 1
 fi
 
 
-wget https://downloads.yoctoproject.org/releases/yocto/yocto-3.1.3/buildtools/${BUILDTOOLS}
+wget https://downloads.yoctoproject.org/releases/yocto/yocto-${RELEASE_VERSION}/buildtools/${BUILDTOOLS}
 
 echo "${SHA256SUM} ${BUILDTOOLS}" > SHA256SUMS
 sha256sum -c SHA256SUMS
