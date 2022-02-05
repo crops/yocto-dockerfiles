@@ -1,10 +1,11 @@
-# centos-8-base
+# alama-8-base
 # Copyright (C) 2015-2020 Intel Corporation
+# Copyright (C) 2022 Konsulko Group
 #
 # SPDX-License-Identifier: GPL-2.0-only
 #
 
-FROM centos:centos8
+FROM almalinux:8
 
 RUN dnf install -y 'dnf-command(config-manager)' && \
     dnf config-manager --set-enabled powertools && \
@@ -13,6 +14,7 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
     dnf -y install \
         bzip2 \
         chrpath \
+        cpio \
         cpp \
         diffstat \
         diffutils \
@@ -32,13 +34,11 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
         perl-Text-ParseWords \
         perl-Thread-Queue \
         python3 \
-        rpcgen \
-        screen \
+	rpcgen \
         socat \
         subversion \
         sudo \
         tar \
-        texinfo \
         tigervnc-server \
         tmux \
         unzip \
