@@ -15,7 +15,9 @@ ls -al /workdir
 useradd -m --skel=/etc/vncskel vncuser
 
 # install xdpyinfo in the distros that are missing it
-if grep -q CentOS /etc/*release; then
+if grep -q Alma /etc/*release; then
+    dnf -y install xorg-x11-utils
+elif grep -q CentOS /etc/*release; then
     yum -y install xorg-x11-utils
 elif grep -q Fedora /etc/*release; then
     dnf -y install xorg-x11-utils
