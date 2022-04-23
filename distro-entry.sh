@@ -14,6 +14,9 @@ fi
 if [ -e /opt/poky/3.1.13/${SETUPSCRIPT} ]; then
     # Buildtools has been installed so enable it
     . /opt/poky/3.1.13/${SETUPSCRIPT} || exit 1
+elif [ -e /opt/poky/4.0/${SETUPSCRIPT} ]; then
+    # Buildtools(-make) has been installed so enable it
+    . /opt/poky/4.0/${SETUPSCRIPT} || exit 1
 fi
 
 exec "$@"

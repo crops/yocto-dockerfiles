@@ -54,6 +54,12 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
     groupadd -g 1000 yoctouser && \
     useradd -u 1000 -g yoctouser -m yoctouser
 
+# Install buildtools-make. The original reason this was needed was due to a
+# sanity check for make 4.1.2
+COPY install-buildtools-make.sh /
+RUN bash /install-buildtools-make.sh && \
+    rm /install-buildtools-make.sh
+
 COPY build-install-dumb-init.sh /
 RUN  bash build-install-dumb-init.sh && \
      rm /build-install-dumb-init.sh && \
