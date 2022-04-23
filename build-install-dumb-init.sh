@@ -56,7 +56,7 @@ pip3 install virtualenv || exit 1
 
 virtualenv $builddir/venv || exit 1
 . $builddir/venv/bin/activate || exit 1
-pip3 install tox || exit 1
+pip3 install setuptools==59.6.0 tox || exit 1
 )
 
 . $builddir/venv/bin/activate || exit 1
