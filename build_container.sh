@@ -28,6 +28,7 @@ workdir=$workdir/$TAG
 cp install-multilib.sh $workdir
 cp build-install-dumb-init.sh $workdir
 cp install-buildtools.sh $workdir
+cp install-buildtools-make.sh $workdir
 cd $workdir
 
 baseimage=`grep FROM Dockerfile | sed -e 's/FROM //'`
