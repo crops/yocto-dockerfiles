@@ -13,6 +13,7 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
     dnf -y update && \
     dnf -y install \
         bzip2 \
+        ccache \
         chrpath \
         cpio \
         cpp \
@@ -26,26 +27,32 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
         glibc-devel \
         glibc-langpack-en \
         gzip \
-	lz4 \
+        lz4 \
         make \
         patch \
         perl \
         perl-Data-Dumper \
         perl-Text-ParseWords \
         perl-Thread-Queue \
+        procps \
         python3 \
-	rpcgen \
+        python3-GitPython \
+        python3-jinja2 \
+        python3-pexpect \
+        python3-pip \
+        rpcgen \
         socat \
         subversion \
         sudo \
         tar \
+        texinfo \
         tigervnc-server \
         tmux \
         unzip \
         wget \
         which \
         xz \
-	zstd && \
+        zstd && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
