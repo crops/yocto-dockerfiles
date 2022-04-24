@@ -6,7 +6,7 @@
 
 FROM opensuse/leap:15.2
 
-RUN zypper --non-interactive install python \
+RUN zypper --non-interactive install \
                    bzip2 \
                    chrpath \
                    diffstat \
@@ -16,11 +16,12 @@ RUN zypper --non-interactive install python \
                    glibc-locale \
                    gzip \
                    iproute2 \
-		   lz4 \
+                   lz4 \
                    make \
                    makeinfo \
                    net-tools \
                    patch \
+                   python \
                    python-curses \
                    python-xml \
                    python3 \
@@ -31,6 +32,7 @@ RUN zypper --non-interactive install python \
                    tar \
                    wget \
                    xorg-x11-Xvnc \
+                   xz \
                    zstd && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
