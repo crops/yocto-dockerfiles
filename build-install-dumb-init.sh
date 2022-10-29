@@ -38,6 +38,8 @@ sha256sum -c sha256sums || exit 1
 tar xf v1.2.5.tar.gz || exit 1
 # https://github.com/Yelp/dumb-init/issues/273
 sed -i '128 i \ \ \ \ packages=[],' dumb-init*/setup.py || exit 1
+# https://github.com/Yelp/dumb-init/issues/286
+echo py >> dumb-init*/requirements-dev.txt
 
 # Replace the versions of python used for testing dumb-init. Since it is
 # testing c code, and not python it shouldn't matter. Also remove the
