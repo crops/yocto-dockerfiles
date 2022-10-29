@@ -36,6 +36,8 @@ echo "3eda470d8a4a89123f4516d26877a727c0945006c8830b7e3bad717a5f6efc4e  v1.2.5.t
 
 sha256sum -c sha256sums || exit 1
 tar xf v1.2.5.tar.gz || exit 1
+# https://github.com/Yelp/dumb-init/issues/273
+sed -i '128 i \ \ \ \ packages=[],' dumb-init*/setup.py || exit 1
 
 # Replace the versions of python used for testing dumb-init. Since it is
 # testing c code, and not python it shouldn't matter. Also remove the
@@ -56,7 +58,7 @@ pip3 install virtualenv || exit 1
 
 virtualenv $builddir/venv || exit 1
 . $builddir/venv/bin/activate || exit 1
-pip3 install setuptools==59.6.0 tox || exit 1
+pip3 install setuptools tox || exit 1
 )
 
 . $builddir/venv/bin/activate || exit 1
