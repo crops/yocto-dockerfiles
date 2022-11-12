@@ -19,8 +19,9 @@ RUN apt-get clean && \
         locales \
 	lz4 \
         procps \
-        python \
+	python \
         python3 \
+	python3-pip \
         screen \
         socat \
         subversion \

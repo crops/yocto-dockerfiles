@@ -17,6 +17,7 @@ RUN yum -y install epel-release centos-release-scl && \
         gzip \
         python \
         python3 \
+	python3-pip \
         unzip \
         perl \
         patch \

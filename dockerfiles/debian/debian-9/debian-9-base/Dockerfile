@@ -22,6 +22,7 @@ RUN apt-get clean && \
         socat \
         python \
         python3 \
+	python3-pip \
         cpio \
         xz-utils \
         locales \
