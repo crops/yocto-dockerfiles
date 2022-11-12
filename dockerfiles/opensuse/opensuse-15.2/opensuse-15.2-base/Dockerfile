@@ -26,6 +26,7 @@ RUN zypper --non-interactive install \
                    python-xml \
                    python3 \
                    python3-curses \
+		   python3-pip \
                    socat \
                    subversion \
                    sudo  \

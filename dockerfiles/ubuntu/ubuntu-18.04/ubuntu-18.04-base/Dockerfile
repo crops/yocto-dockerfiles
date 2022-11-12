@@ -21,6 +21,7 @@ RUN apt-get update && \
         socat \
         python \
         python3 \
+	python3-pip \
         xz-utils  \
         locales \
         cpio \

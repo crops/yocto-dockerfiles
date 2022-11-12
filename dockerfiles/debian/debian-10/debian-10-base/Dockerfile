@@ -20,8 +20,9 @@ RUN apt-get clean && \
         build-essential \
         chrpath \
         socat \
-        python \
+	python \
         python3 \
+	python3-pip \
         cpio \
         xz-utils \
         locales \
