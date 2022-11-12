@@ -20,6 +20,7 @@ jobs:
       matrix:
         distro_to_build: [
           alma-8,
+          alma-9,
           centos-7,
           debian-9,
           debian-10,
