@@ -42,11 +42,13 @@ RUN apt-get clean && \
     useradd -U -m yoctouser && \
     echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
 
-# Install buildtools-make. The original reason this was needed was due to a
-# sanity check for make 4.1.2
-COPY install-buildtools-make.sh /
-RUN bash /install-buildtools-make.sh && \
-    rm /install-buildtools-make.sh
+# Install buildtools. The original reason this was needed was due to a
+# sanity check for make 4.1.2, but now we're relying on python-3.8 so instead
+# of -make, install all the buildtools
+
+COPY install-buildtools.sh /
+RUN bash /install-buildtools.sh && \
+    rm /install-buildtools.sh
 
 COPY build-install-dumb-init.sh install-multilib.sh /
 RUN  bash /build-install-dumb-init.sh && \
