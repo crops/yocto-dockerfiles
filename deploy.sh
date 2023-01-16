@@ -19,4 +19,11 @@ if ([ "${GITHUB_EVENT_NAME}" = "push" ] || [ "${GITHUB_EVENT_NAME}" = "workflow_
     echo $DOCKER_PASSWORD | ${ENGINE_CMD} login -u $DOCKER_USERNAME --password-stdin
     ${ENGINE_CMD} push $REPO:$DISTRO_TO_BUILD-base
     ${ENGINE_CMD} push $REPO:$DISTRO_TO_BUILD-builder
+
+    ${ENGINE_CMD} tag $REPO:$DISTRO_TO_BUILD-base ghcr.io/$REPO:$DISTRO_TO_BUILD-base
+    ${ENGINE_CMD} tag $REPO:$DISTRO_TO_BUILD-builder ghcr.io/$REPO:$DISTRO_TO_BUILD-builder
+
+    echo $GHCR_PASSWORD | ${ENGINE_CMD} login ghcr.io -u $GHCR_USERNAME --password-stdin
+    ${ENGINE_CMD} push ghcr.io/$REPO:$DISTRO_TO_BUILD-base
+    ${ENGINE_CMD} push ghcr.io/$REPO:$DISTRO_TO_BUILD-builder
 fi
