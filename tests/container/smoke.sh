@@ -19,7 +19,7 @@ fi
 
 # Pass in the image that was built for docker
 image=$1
-workdir=`mktemp -d --suffix=smoke`
+workdir=`mktemp -d`
 pokydir=/workdir/poky
 builddir=/workdir/build
 
@@ -49,4 +49,4 @@ docker volume rm testvolume
 ${ENGINE_CMD} run -t --rm -v $workdir:/workdir -u $(id -u):$(id -g) -w '/' --entrypoint=/bin/rm $image \
                   $builddir -rf
 
-rm $workdir -rf
+rm -rf $workdir

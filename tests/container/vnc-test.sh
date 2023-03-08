@@ -16,11 +16,11 @@ fi
 
 # Pass in the image that was built for docker
 image=$1
-workdir=`mktemp -d --suffix=vnc`
+workdir=`mktemp -d`
 SCRIPT_DIR=$(dirname $(readlink -f $0))
 CONTAINER_SCRIPT=vnc-in-container-test.sh
 cp $SCRIPT_DIR/$CONTAINER_SCRIPT $workdir
 
 ${ENGINE_CMD} run -t --rm -v $workdir:/workdir \
     --entrypoint=/workdir/$CONTAINER_SCRIPT --user=root  $image
-rm $workdir -rf
+rm -rf $workdir
