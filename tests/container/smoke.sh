@@ -35,10 +35,14 @@ chmod -R 777 $workdir
 ${ENGINE_CMD} run -t --rm --entrypoint=/bin/bash -u $(id -u):$(id -g) -w '/' $image -c 'ls /usr/bin/dumb-init'
 
 # Try to build quilt-native which is small and fast to build.
-git clone --depth 1 --branch master \
-          git://git.yoctoproject.org/poky $workdir/poky
-${ENGINE_CMD} run -t --rm -v $workdir:/workdir -u $(id -u):$(id -g) -w '/' $image --pokydir=$pokydir \
+docker volume create --name testvolume
+docker run -it --rm -v testvolume:/workdir busybox chown -R $(id -u):$(id -g) /workdir
+docker run -it --rm -v testvolume:/workdir alpine/git clone --depth 1 --branch master \
+          git://git.yoctoproject.org/poky /workdir/poky
+${ENGINE_CMD} run -t --rm -v testvolume:/workdir -u $(id -u):$(id -g) -w '/' $image --pokydir=$pokydir \
                   -b $builddir -t quilt-native
+
+docker volume rm testvolume
 
 # Since yoctouser in the container may create files that the travis user
 # can't delete, run the container again to delete the files in the directory.
