@@ -25,7 +25,6 @@ workdir=`mktemp --tmpdir -d tmp-$TAG.XXX`
 cp -r $dockerdir $workdir
 workdir=$workdir/$TAG
 
-cp install-multilib.sh $workdir
 cp build-install-dumb-init.sh $workdir
 cp install-buildtools.sh $workdir
 cp install-buildtools-make.sh $workdir
@@ -35,6 +34,7 @@ baseimage=`grep FROM Dockerfile | sed -e 's/FROM //'`
 ${ENGINE_CMD} pull $baseimage
 
 ${ENGINE_CMD} build \
+       --build-arg TARGETPLATFORM=$TARGETPLATFORM \
        --build-arg http_proxy=$http_proxy \
        --build-arg HTTP_PROXY=$http_proxy \
        --build-arg https_proxy=$https_proxy \
@@ -63,6 +63,7 @@ sed -i -e "s#crops/yocto#$REPO#" Dockerfile
 
 # Lastly build the image
 ${ENGINE_CMD} build \
+       --build-arg TARGETPLATFORM=$TARGETPLATFORM \
        --build-arg http_proxy=$http_proxy \
        --build-arg HTTP_PROXY=$http_proxy \
        --build-arg https_proxy=$https_proxy \
