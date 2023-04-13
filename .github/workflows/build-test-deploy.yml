@@ -37,8 +37,12 @@ jobs:
           ubuntu-20.04,
           ubuntu-22.04
         ]
+        targetplatform: [
+          linux/amd64
+        ]
     env:
       DISTRO_TO_BUILD: ${{ matrix.distro_to_build }}
+      TARGETPLATFORM: ${{ matrix.targetplatform }}
       REPO: crops/yocto
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

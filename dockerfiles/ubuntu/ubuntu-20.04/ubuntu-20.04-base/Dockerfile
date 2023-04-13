@@ -6,6 +6,8 @@
 
 FROM ubuntu:20.04
 
+ARG TARGETPLATFORM
+
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
         gawk \
@@ -41,6 +43,13 @@ RUN apt-get update && \
         tightvncserver \
         lz4 \
         zstd && \
+    case ${TARGETPLATFORM} in \
+        "linux/amd64") \
+            DEBIAN_FRONTEND=noninteractive apt-get install -y \
+                gcc-multilib \
+                g++-multilib \
+            ;; \
+    esac && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
@@ -51,11 +60,9 @@ RUN apt-get update && \
     echo 'dash dash/sh boolean false' | debconf-set-selections && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
-COPY build-install-dumb-init.sh install-multilib.sh /
+COPY build-install-dumb-init.sh /
 RUN  bash /build-install-dumb-init.sh && \
      rm /build-install-dumb-init.sh && \
-     bash /install-multilib.sh && \
-     rm /install-multilib.sh && \
      apt-get clean
 
 USER yoctouser

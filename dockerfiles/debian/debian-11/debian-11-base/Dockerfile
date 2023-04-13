@@ -6,6 +6,8 @@
 
 FROM debian:11
 
+ARG TARGETPLATFORM
+
 RUN apt-get clean && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -34,6 +36,13 @@ RUN apt-get clean && \
         wget \
         xz-utils \
 	zstd && \
+    case ${TARGETPLATFORM} in \
+        "linux/amd64") \
+            DEBIAN_FRONTEND=noninteractive apt-get install -y \
+                gcc-multilib \
+                g++-multilib \
+            ;; \
+    esac && \
     cp -af /etc/skel/ /etc/vncskel/ && \
     echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
     mkdir  /etc/vncskel/.vnc && \
@@ -42,11 +51,9 @@ RUN apt-get clean && \
     useradd -U -m yoctouser && \
     echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
 
-COPY build-install-dumb-init.sh install-multilib.sh /
+COPY build-install-dumb-init.sh  /
 RUN  bash /build-install-dumb-init.sh && \
      rm /build-install-dumb-init.sh && \
-     bash /install-multilib.sh && \
-     rm /install-multilib.sh && \
      apt-get clean
 
 USER yoctouser
