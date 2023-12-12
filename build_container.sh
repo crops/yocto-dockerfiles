@@ -74,10 +74,10 @@ ${ENGINE_CMD} build \
 cd -
 
 # base tests
-ENGINE_CMD=${ENGINE_CMD}
+ENGINE_CMD=${ENGINE_CMD} \
     ./tests/container/vnc-test.sh $REPO:$DISTRO_TO_BUILD-base
 # builder tests
-ENGINE_CMD=${ENGINE_CMD}
+ENGINE_CMD=${ENGINE_CMD} \
     ./tests/container/smoke.sh $REPO:$DISTRO_TO_BUILD-builder
 
 rm $workdir -rf
