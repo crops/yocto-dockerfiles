@@ -26,6 +26,7 @@ jobs:
           centos-7,
           debian-10,
           debian-11,
+	  debian-12,
           fedora-36,
           opensuse-15.4,
           ubuntu-18.04,
@@ -45,7 +46,7 @@ jobs:
       GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Build and test the images
       - name: Run build-and-test.sh
