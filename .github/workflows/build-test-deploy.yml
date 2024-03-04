@@ -29,6 +29,7 @@ jobs:
           fedora-36,
           fedora-37,
           fedora-38,
+          fedora-39,
           opensuse-15.4,
           ubuntu-18.04,
           ubuntu-20.04,
