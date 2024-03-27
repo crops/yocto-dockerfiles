@@ -22,11 +22,11 @@ elif grep -q Fedora /etc/*release; then
     INSTALL_CMD="dnf -y install glibc-static"
     REMOVE_CMD="dnf -y remove glibc-static"
 elif grep -q Ubuntu /etc/*release || grep -q Debian /etc/*release; then
-    INSTALL_CMD="apt-get install -y python3-pip"
-    REMOVE_CMD="apt-get remove -y python3-pip"
+    INSTALL_CMD=""
+    REMOVE_CMD=""
 elif grep -q openSUSE /etc/*release; then
-    INSTALL_CMD="zypper --non-interactive install python3-pip glibc-devel-static"
-    REMOVE_CMD="zypper --non-interactive remove python3-pip glibc-devel-static"
+    INSTALL_CMD="zypper --non-interactive install glibc-devel-static"
+    REMOVE_CMD="zypper --non-interactive remove glibc-devel-static"
 else
     exit 1
 fi
