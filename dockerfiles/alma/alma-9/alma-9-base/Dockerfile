@@ -40,6 +40,7 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
         python3-jinja2 \
         python3-pexpect \
         python3-pip \
+        python3-virtualenv \
         rpcgen \
         socat \
         subversion \

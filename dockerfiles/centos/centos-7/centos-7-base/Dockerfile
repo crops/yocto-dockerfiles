@@ -16,6 +16,7 @@ RUN yum -y install epel-release centos-release-scl && \
         bzip2 \
         gzip \
         python \
+        python-virtualenv \
         python3 \
 	python3-pip \
         unzip \
