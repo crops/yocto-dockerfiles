@@ -57,4 +57,5 @@ jobs:
 
       # Deploy the images
       - name: Deploy
+        if: ${{ env.DOCKER_PASSWORD != '' && env.GHCR_PASSWORD != '' }}
         run: ./deploy.sh
