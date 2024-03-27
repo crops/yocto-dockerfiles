@@ -32,6 +32,7 @@ RUN zypper --non-interactive install \
                    python3-curses \
 		   python3-pexpect \
 		   python3-pip \
+                   python3-virtualenv \
                    rpcgen \
                    socat \
                    subversion \

@@ -46,6 +46,7 @@ RUN dnf -y update && \
         xz \
         python3-GitPython \
         python3-jinja2 \
+        python3-virtualenv \
         SDL-devel \
         xterm \
         rpcgen \

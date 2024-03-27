@@ -24,6 +24,7 @@ RUN apt-get clean && \
         python \
         python3 \
         python3-pip \
+        python3-virtualenv \
         screen \
         socat \
         subversion \

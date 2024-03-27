@@ -37,6 +37,7 @@ RUN dnf -y update && \
         perl-bignum \
         socat \
         python3-pexpect \
+        python3-virtualenv \
         findutils \
         which \
         file \
