@@ -22,6 +22,7 @@ RUN apt-get clean && \
         lz4 \
         procps \
         python \
+        python-virtualenv \
         python3 \
         python3-pip \
         python3-virtualenv \
