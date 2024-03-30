@@ -11,30 +11,30 @@ ARG TARGETPLATFORM
 RUN apt-get clean && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        gawk \
-        wget \
-        git-core \
-        subversion \
-        diffstat \
-        unzip \
-        sysstat \
-        texinfo \
         build-essential \
         chrpath \
-        socat \
-	python \
-        python3 \
-	python3-pip \
         cpio \
-        xz-utils \
-        locales \
-        screen \
-        tmux \
-        sudo \
+        diffstat \
         fluxbox \
-        procps \
-        tightvncserver \
+        gawk \
+        git-core \
+        locales \
         lz4 \
+        procps \
+        python \
+        python3 \
+        python3-pip \
+        screen \
+        socat \
+        subversion \
+        sudo \
+        sysstat \
+        texinfo \
+        tightvncserver \
+        tmux \
+        unzip \
+        wget \
+        xz-utils \
         zstd && \
     case ${TARGETPLATFORM} in \
         "linux/amd64") \
