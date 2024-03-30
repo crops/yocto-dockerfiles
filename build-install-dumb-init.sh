@@ -49,19 +49,9 @@ sed -i -e 's/tox -e pre-commit//' dumb-init*/Makefile || exit 1
 
 $INSTALL_CMD || exit 1
 
-# Setup the buildtools enviroment in the subshell, since we really only want
-# to use python3 from buildtools.
-(
-if [ -e /opt/poky/*/environment-setup-*-pokysdk-linux ]; then
-    . /opt/poky/*/environment-setup-*-pokysdk-linux
-fi
-
-pip3 install virtualenv || exit 1
-
 virtualenv $builddir/venv || exit 1
 . $builddir/venv/bin/activate || exit 1
 pip3 install setuptools tox || exit 1
-)
 
 . $builddir/venv/bin/activate || exit 1
 cd dumb-init* || exit 1
