@@ -32,7 +32,8 @@ jobs:
           opensuse-15.5,
           ubuntu-18.04,
           ubuntu-20.04,
-          ubuntu-22.04
+          ubuntu-22.04,
+          ubuntu-24.04
         ]
         targetplatform: [
           linux/amd64
