@@ -1,63 +1,61 @@
 name: yocto-container build and test
 on:
-  push:
-    branches:
-      - master
-  pull_request:
+    push:
+        branches:
+            - master
+    pull_request:
 
-  # Allow for manually running
-  workflow_dispatch:
+    # Allow for manually running
+    workflow_dispatch:
 
-  # Run at 00:52 UTC every Saturday
-  schedule:
-    - cron: '52 0 * * 6'
+    # Run at 00:52 UTC every Saturday
+    schedule:
+        - cron: "52 0 * * 6"
 
 jobs:
-  build-test-deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-    strategy:
-      fail-fast: false
-      matrix:
-        distro_to_build: [
-          alma-8,
-          alma-9,
-          centos-7,
-          debian-10,
-          debian-11,
-          debian-12,
-          fedora-36,
-          fedora-37,
-          fedora-38,
-          fedora-39,
-          fedora-40,
-          opensuse-15.4,
-          opensuse-15.5,
-          ubuntu-18.04,
-          ubuntu-20.04,
-          ubuntu-22.04
-        ]
-        targetplatform: [
-          linux/amd64
-        ]
-    env:
-      DISTRO_TO_BUILD: ${{ matrix.distro_to_build }}
-      TARGETPLATFORM: ${{ matrix.targetplatform }}
-      REPO: crops/yocto
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      GHCR_USERNAME: ${{ github.actor }}
-      GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+    build-test-deploy:
+        runs-on: ubuntu-latest
+        permissions:
+            packages: write
+        strategy:
+            fail-fast: false
+            matrix:
+                distro_to_build:
+                    [
+                        alma-8,
+                        alma-9,
+                        centos-7,
+                        debian-10,
+                        debian-11,
+                        debian-12,
+                        fedora-36,
+                        fedora-37,
+                        fedora-38,
+                        fedora-39,
+                        fedora-40,
+                        opensuse-15.4,
+                        opensuse-15.5,
+                        ubuntu-18.04,
+                        ubuntu-20.04,
+                        ubuntu-22.04,
+                    ]
+        env:
+            DISTRO_TO_BUILD: ${{ matrix.distro_to_build }}
+            TARGETPLATFORM: ${{ matrix.targetplatform }}
+            REPO: crops/yocto
+            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+            GHCR_USERNAME: ${{ github.actor }}
+            GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
-    steps:
-      - uses: actions/checkout@v4
+        steps:
+            - uses: actions/checkout@v4
 
-      # Build and test the images
-      - name: Run build-and-test.sh
-        run: ./build_container.sh
+            # Build and test the images
+            - name: Run build-and-test.sh
+              run: ./build_container.sh
 
-      # Deploy the images
-      - name: Deploy
-        if: ${{ env.DOCKER_PASSWORD != '' && env.GHCR_PASSWORD != '' }}
-        run: ./deploy.sh
+            # Deploy the images
+            - name: Deploy
+              if: ${{ env.DOCKER_PASSWORD != '' && env.GHCR_PASSWORD != '' }}
+              run: ./deploy.sh
