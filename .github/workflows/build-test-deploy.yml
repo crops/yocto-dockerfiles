@@ -41,7 +41,6 @@ jobs:
                     ]
         env:
             DISTRO_TO_BUILD: ${{ matrix.distro_to_build }}
-            TARGETPLATFORM: ${{ matrix.targetplatform }}
             REPO: crops/yocto
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -51,26 +50,11 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Generate tag
-              id: tag
-              run: echo "TAG=${{ matrix.distro_to_build }}-base" >> $GITHUB_OUTPUT
-
-            - name: Get docker dir
-              id: dockerdir
-              run: echo "DOCKER_DIR='find -name ${{ steps.tag.outputs.TAG}}'" >> $GITHUB_OUTPUT
-
-            - name: Get working directory
-              id: workdir
-              run: echo "WORK_DIR='mktemp --tmpdir -d tmp-${{ steps.tag.outputs.TAG}}.XXX'" >> $GITHUB_OUTPUT
-
-            - name: Setup working directory
-              run: |
-                  cp -r ${{ steps.dockerdir.outputs.DOCKER_DIR }} ${{ steps.workdir.outputs.WORK_DIR }}
-                  WORK_DIR=${{ steps.workdir.outputs.WORK_DIR }}/${{ steps.tag.outputs.TAG }}
-                  cp build-install-dumb-init.sh $workdir
-                  cp install-buildtools.sh $WORK_DIR
-                  cp install-buildtools-make.sh $WORK_DIR
-                  echo "WORK_DIR=$WORK_DIR" >> $GITHUB_OUTPUT
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ github.env.DOCKER_USERNAME }}
+                  password: ${{ github.env.DOCKER_PASSWORD }}
 
             - name: Login to GitHub Container Registry
               uses: docker/login-action@v3
@@ -79,18 +63,50 @@ jobs:
                   username: ${{ github.env.GHCR_USERNAME }}
                   password: ${{ github.env.GHCR_PASSWORD }}
 
+            - name: Generate base tag
+              id: base-tag
+              run: echo "TAG=${{ matrix.distro_to_build }}-base" >> $GITHUB_OUTPUT
+
+            - name: Get docker dir
+              id: dockerdir
+              run: echo "DOCKER_DIR='find -name ${{ steps.base-tag.outputs.TAG}}'" >> $GITHUB_OUTPUT
+
+            - name: Get working directory
+              id: workdir
+              run: echo "WORK_DIR='mktemp --tmpdir -d tmp-${{ steps.base-tag.outputs.TAG}}.XXX'" >> $GITHUB_OUTPUT
+
+            - name: Setup working directory
+              id: setup-workdir
+              run: |
+                  cp -r ${{ steps.dockerdir.outputs.DOCKER_DIR }} ${{ steps.workdir.outputs.WORK_DIR }}
+                  WORK_DIR=${{ steps.workdir.outputs.WORK_DIR }}/${{ steps.base-tag.outputs.TAG }}
+                  cp build-install-dumb-init.sh $WORK_DIR
+                  cp install-buildtools.sh $WORK_DIR
+                  cp install-buildtools-make.sh $WORK_DIR
+                  echo "WORK_DIR=$WORK_DIR" >> $GITHUB_OUTPUT
+
+            - name: Get baseimage
+              id: baseimage
+              working-directory: ${{ steps.setup-workdir.outputs.WORK_DIR }}
+              run: echo "BASE_IMAGE=`grep FROM Dockerfile | sed -e 's/FROM //'" >> $GITHUB_OUTPUT
+
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v3
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
-            - name: Build
+            - name: Pull base image
+              run: docker pull ${{ steps.baseimage.outputs.BASE_IMAGE }}
+
+            - name: Build base
               uses: docker/build-push-action@v5
               with:
                   platforms: linux/amd64,linux/arm64
+                  push: false
                   load: true
                   pull: true
+                  context: ${{ steps.setup-workdir.outputs.WORK_DIR }}
                   build-args: |
                       BASE_DISTRO=${{ matrix.base_distro }}
                       http_proxy=$http_proxy
@@ -99,13 +115,73 @@ jobs:
                       HTTPS_PROXY=$https_proxy
                       no_proxy=$no_proxy
                       NO_PROXY=$no_proxy
-                  tags: ${{ steps.tag.outputs.TAG }}
+                  tags: ${{ github.env.REPO }}/${{ steps.tag.outputs.TAG }}
 
-            # Build and test the images
-            - name: Run build-and-test.sh
-              run: ./build_container.sh
+            - name: Clean up
+              run: rm ${{ steps.setup-workdir.outputs.WORK_DIR }} -rf
 
-            # Deploy the images
-            - name: Deploy
-              if: ${{ env.DOCKER_PASSWORD != '' && env.GHCR_PASSWORD != '' }}
-              run: ./deploy.sh
+            - name: Create builder tag
+              id: builder-tag
+              run: echo "TAG=${{ matrix.distro_to_build }}-builder" >> $GITHUB_OUTPUT
+
+            - name: Build builder
+              id: builder-workdir
+              run: echo "WORK_DIR='mktemp --tmpdir -d tmp-${{ steps.builder-tag.outputs.TAG}}.XXX'" >> $GITHUB_OUTPUT
+
+            - name: Populate distro specific dockerfile
+              id: distro-dockerfile
+              run: |
+                  workdir=${{ steps.builder-workdir.outputs.WORK_DIR }}
+                  cp dockerfiles/templates/Dockerfile.builder $workdir/Dockerfile
+                  cp distro-entry.sh $workdir
+                  sed -i "s/DISTRO_TO_BUILD/$DISTRO_TO_BUILD/g" $workdir/Dockerfile
+                  cp helpers/runbitbake.py $workdir
+
+            - name: Replace rewitt/yocto repo
+              id: replace-rewitt
+              working-directory: ${{ steps.builder-workdir.outputs.WORK_DIR }}
+              run: sed -i -e "s#crops/yocto#$REPO#" Dockerfile
+
+            - name: Build image
+              uses: docker/build-push-action@v5
+              with:
+                  platforms: linux/amd64,linux/arm64
+                  push: false
+                  load: true
+                  pull: true
+                  context: ${{ steps.builder-workdir.outputs.WORK_DIR }}
+                  build-args: |
+                      http_proxy=$http_proxy
+                      HTTP_PROXY=$http_proxy
+                      https_proxy=$https_proxy
+                      HTTPS_PROXY=$https_proxy
+                      no_proxy=$no_proxy
+                      NO_PROXY=$no_proxy
+                  tags: ${{ github.env.REPO }}/${{ steps.builder-tag.outputs.TAG }}
+
+            - name: Test base container
+              run: ./tests/container/vnc-test.sh ${{ github.env.REPO}}:${{ steps.base-tag.outputs.TAG}}
+
+            - name: Test builder container
+              run: ./tests/container/smoke.sh ${{ github.env.REPO}}:${{ steps.builder-tag.outputs.TAG}}
+
+            - name: Cleanup
+              run: rm ${{ steps.builder-workdir.outputs.WORK_DIR }} -rf
+
+            - name: Push base image
+              uses: docker/build-push-action@v5
+              with:
+                  context: ${{ steps.base-workdir.outputs.WORK_DIR }}
+                  platforms: linux/amd64,linux/arm64
+                  push: true
+                  tags: ${{ env.LATEST_TAG }}
+
+            - name: Push builder image
+              uses: docker/build-push-action@v5
+              with:
+                  context: ${{ steps.builder-workdir.outputs.WORK_DIR }}
+                  platforms: linux/amd64,linux/arm64
+                  push: true
+                  tags: |
+                      ghcr.io/${{ github.env.REPO }}/${{ steps.builder-tag.outputs.TAG }}
+                      ${{ steps.builder-tag.outputs.TAG }}
