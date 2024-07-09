@@ -58,7 +58,7 @@ RUN apt-get update && \
 # Install buildtools due to python 3.8
 
 COPY install-buildtools.sh /
-RUN bash /install-buildtools.sh && \
+RUN bash /install-buildtools.sh extended && \
     rm /install-buildtools.sh
 
 COPY build-install-dumb-init.sh /

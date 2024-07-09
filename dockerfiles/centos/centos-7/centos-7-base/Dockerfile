@@ -57,7 +57,7 @@ RUN yum -y install epel-release centos-release-scl && \
 # build recent Yocto Project releases. Install the buildtools tarball to
 # provide the required tools.
 COPY install-buildtools.sh /
-RUN bash /install-buildtools.sh && \
+RUN bash /install-buildtools.sh extended && \
     rm /install-buildtools.sh
 
 COPY build-install-dumb-init.sh /

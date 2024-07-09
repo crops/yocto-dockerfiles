@@ -67,7 +67,7 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
 # of -make, install all the buildtools
 
 COPY install-buildtools.sh /
-RUN bash /install-buildtools.sh && \
+RUN bash /install-buildtools.sh extended && \
     rm /install-buildtools.sh
 
 COPY build-install-dumb-init.sh /

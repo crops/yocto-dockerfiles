@@ -64,9 +64,9 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
 
 # Install buildtools-make. The original reason this was needed was due to a
 # sanity check for make 4.1.2
-COPY install-buildtools-make.sh /
-RUN bash /install-buildtools-make.sh && \
-    rm /install-buildtools-make.sh
+COPY install-buildtools.sh /
+RUN bash /install-buildtools.sh make && \
+    rm /install-buildtools.sh
 
 COPY build-install-dumb-init.sh /
 RUN  bash build-install-dumb-init.sh && \
