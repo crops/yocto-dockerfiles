@@ -25,10 +25,10 @@ RUN zypper --non-interactive install \
                    net-tools \
                    patch \
                    python3 \
-		   python3-Jinja2 \
+                   python3-Jinja2 \
                    python3-curses \
-		   python3-pexpect \
-		   python3-pip \
+                   python3-pexpect \
+                   python3-pip \
                    python3-virtualenv \
                    rpcgen \
                    socat \
