@@ -37,6 +37,7 @@ RUN apt-get update && \
         python3-virtualenv \
         libegl1-mesa \
         libsdl1.2-dev \
+        libmd0 \
         pylint3 \
         xterm \
         iproute2 \
