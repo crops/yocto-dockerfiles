@@ -55,6 +55,7 @@ RUN dnf -y update && \
         # These packages were added because of reasons such as fewer packages
         # being in the container image by default
         fluxbox \
+        git-lfs \
         glibc-langpack-en \
         hostname \
         procps \

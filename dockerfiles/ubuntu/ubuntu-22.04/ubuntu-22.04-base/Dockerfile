@@ -14,6 +14,7 @@ RUN apt-get update && \
         gawk \
         wget \
         git-core \
+        git-lfs \
         subversion \
         diffstat \
         unzip \

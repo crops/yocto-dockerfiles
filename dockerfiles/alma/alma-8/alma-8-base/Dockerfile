@@ -24,6 +24,7 @@ RUN dnf install -y 'dnf-command(config-manager)' && \
         gcc \
         gcc-c++ \
         git \
+        git-lfs \
         glibc-devel \
         glibc-langpack-en \
         gzip \

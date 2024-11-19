@@ -15,6 +15,7 @@ RUN zypper --non-interactive install \
                    gcc \
                    gcc-c++ \
                    git \
+                   git-lfs \
                    glibc-locale \
                    gzip \
                    iproute2 \

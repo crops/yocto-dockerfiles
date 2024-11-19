@@ -18,6 +18,7 @@ RUN apt-get clean && \
         fluxbox \
         gawk \
         git-core \
+        git-lfs \
         locales \
         lz4 \
         procps \
